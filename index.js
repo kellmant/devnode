@@ -28,11 +28,6 @@ module.exports = () => {
 		cmd = 'help'
 	}
 
-	//if (cmd) {
-	//	console.log('command args : %j', args)
-	//	cmd = `${args._[0]}`
-	//}
-	
 	switch (cmd) {
 		case 'version':
 			//let mload = './bin/version'
