@@ -8,14 +8,11 @@ console.log('\n')
 
 module.exports = () => {
 //
-	let cmd = 'version'
+	let cmd = 'help'
 	const args = minimist(process.argv.slice(2))
 	if (typeof args._[0] !== 'undefined') {
 		cmd = args._[0] 
-	} //else {
-	//	cmd = 'help'
-	//}
-
+	}
 	console.log('showing cmd arg input: %j', cmd)
 
 	if (args._[0] == 'version' || args.version || args.v) {
