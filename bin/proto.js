@@ -2,7 +2,7 @@
 // STOP - THIS IS A TEMPLATE
 //
 // copy this to the new filename for your class method
-// put a copy of your main runtime for the class in bin/
+// put a copy of your main runtime with the class in bin/
 // put a copy of the class constructor in class/
 // put a copy of the functions your class needs in fun/
 
@@ -13,26 +13,21 @@
 //
 const path = require('path');
 const scriptname = path.basename(__filename);
-const classcall = `../class/${scriptname}`
-const myClass = require(classcall)
+//const classcall = `../class/${scriptname}`
+//const myClass = require(classcall)
 
 // example runtime for your class method
 //
-const myopts = {
-	'recursive' : true
+
+module.exports = async (args) => {
+	try {
+	const myThing = new Thing()
+	myThing.print()
+	myThing.read()
+	await myThing.update()
+	await myThing.print()
 }
 
-const myKeys = new Keystore()
-async function main() {
-	myKeys.print()
-	myKeys.setKeyhost()
-	myKeys.setOpt(myopts)
-	await myKeys.getKey('apiadmin')
-	await myKeys.showRes()
-	//console.log(myopts)
-}
-
-main()
 
 
 //Class Constructor
@@ -48,7 +43,7 @@ const scriptname = path.basename(__filename);
 const funcall = `../fun/${scriptname}`
 const myFunc = require(funcall)
 
-class MyClass {
+class Thing {
 
 	constructor(x) {
 		this.x = x
@@ -60,7 +55,7 @@ class MyClass {
 		
 	}
 
-	showRes () {
+	show () {
 		console.log(Object.getOwnPropertyNames(this.result))
 		console.log(Object.getOwnPropertyDescriptors(this.result))
 		console.log(Object.getOwnPropertySymbols(this.result))
@@ -68,17 +63,35 @@ class MyClass {
 		console.log(Object.values(this.result))
 	}
 
-	getX (x) {
-		if (!x) {
+	create (x) {
+		if (this.x) {
+			return
+		} else {
+			this.x = x
+		}
+		return this
+	}
+
+	read (x) {
+		if (!this.x) {
 			return this
 		} else {
 			return this.x
 		}
 	}
 
-	setX (x) {
-		if (!x) {
+	update (x) {
+		if (!this.x) {
 			return
+		} else {
+			this.x = x
+		}
+		return this
+	}
+
+	destroy (x) {
+		if (this.x) {
+			this.x = '
 		} else {
 			this.x = x
 		}

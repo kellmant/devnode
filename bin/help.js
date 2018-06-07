@@ -4,12 +4,14 @@
 	main:` 
 		ctrl [command] <options>
 
-		help ............... show controller help
-		version ............ show controller version
-		keystore .............. example etcd class method
+	    [command] 	   Description
+	    =================================================
+	     version  ... show controller version
+	     keystore ... example etcd class method
+	     api      ... example api call with axios
 	
-
-	=================================================
+		use 'ctrl help [command]' for more info
+	    =================================================
 							`,
 	
 	keystore:`
@@ -20,15 +22,11 @@
 
 		                          `,
 
-	show:`
-		ctrl show <object type>
+	api:`
+		ctrl api --<key> <value>
 
-		hosts .... host objects
-		networks .... network objects
-		groups .... group objects
-		unused-objects .... unused objects
-		all <async> .... get all the main object types (add 'async' for concurrent gets)
-		objects .... all objects in the domain
+		 --key     ..... <value to assign>
+
 		                           `,
 
 	backup:`

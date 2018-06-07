@@ -22,7 +22,7 @@ module.exports = () => {
 		console.log('version args : %j', args)
 		cmd = 'version'
 	}
-	if (cmd == 'help' || args.help || args.h) {
+	if (args._[0] == 'help' || args.help || args.h) {
 		console.log('help args : %j', args)
 		cmd = 'help'
 	}
