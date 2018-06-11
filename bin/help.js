@@ -17,7 +17,7 @@
 	keystore:`
 		ctrl keystore --<option> <setting>
 
-		 --keystore ..... <hostname for etcd service>
+		 --keyhost ..... <hostname for etcd service>
 		 --key      ..... <name of key>
 
 		                          `,
