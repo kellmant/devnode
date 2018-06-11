@@ -24,6 +24,7 @@
   "license": "MIT",
   "homepage": "https://github.com/kellmant/node#readme",
   "dependencies": {
+	"axios": "^0.18.0",
 	"minimist": "^1.2.0",
 	"node-etcd": "^5.1.0"
   }
