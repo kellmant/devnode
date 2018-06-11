@@ -21,11 +21,14 @@ const scriptname = path.basename(__filename);
 
 module.exports = async (args) => {
 	try {
-	const myThing = new Thing()
-	myThing.print()
-	myThing.read()
-	await myThing.update()
-	await myThing.print()
+		const myThing = new Thing()
+		myThing.print()
+		myThing.read()
+		await myThing.update()
+		await myThing.print()
+	} catch (err) {
+		console.log(err)
+	}
 }
 
 
