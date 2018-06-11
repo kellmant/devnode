@@ -19,9 +19,15 @@ module.exports = async (args) => {
 		if (!args.key) {
 			args.key = '/'
 		}
+		if (args.recursive) {
+			myKeys.setOpt(args)
+		}
 		myKeys.print()
 		await myKeys.getKey(args.key)
-		await myKeys.print()
+		//await myKeys.print()
+		await myKeys.showRes()
+		let myvalue = await myKeys.resVal()
+		await console.log(myvalue)
 	} catch (err) {
 		console.log(err)
 	}

@@ -25,12 +25,16 @@ module.exports = class Keystore {
 		
 	}
 
+	resVal () {
+		return this.result.node.value
+	}
+
 	showRes () {
-		console.log(Object.getOwnPropertyNames(this.result.node.nodes))
-		console.log(Object.getOwnPropertyDescriptors(this.result.node.nodes))
-		console.log(Object.getOwnPropertySymbols(this.result.node))
-		console.log(Object.keys(this.result.node.nodes))
-		console.log(Object.values(this.result.node.nodes))
+		console.log(Object.getOwnPropertyNames(this.result))
+		console.log(Object.getOwnPropertyDescriptors(this.result))
+		//console.log(Object.getOwnPropertySymbols(this.result))
+		console.log(Object.keys(this.result.node))
+		console.log(Object.values(this.result.node))
 		//console.log(Object.entries(this.result.node.nodes))
 		//console.log(Object.keys(this.result.node.nodes))
 		//console.log(Object.values(this.result.node.nodes))
