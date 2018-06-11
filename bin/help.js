@@ -9,6 +9,7 @@
 	     version  ... show controller version
 	     keystore ... example etcd class method
 	     api      ... example api call with axios
+	     login    ... login to <CPapiHost>
 	
 		use 'ctrl help [command]' for more info
 	    =================================================
@@ -29,15 +30,12 @@
 
 		                           `,
 
-	backup:`
-		ctrl backup <options>
+	login:`
+		ctrl login <host>
 
-		all                 .... backup all objects
-		hosts               .... backup host objects
-		networks            .... backup network objects
-		groups              .... backup group object references
+		<host>     .... specify the configured api host
 
-		Ex. ctrl backup show-objects
+		Ex. ctrl login smc
 
 		
 							`
