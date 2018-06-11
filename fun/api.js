@@ -7,13 +7,13 @@ module.exports.read = function (x) {
 	return new Promise(function(resolve, reject) {
 		axios.defaults.headers.common['Accept'] = 'application/json'
 		axios(x)
-			.then(function (value, err) {
-				if (err) {
-					reject(err)
-				} else {
-					resolve(res)
-				}
-			})
+		.then(function (value, err) {
+			if (err) {
+				reject(err)
+			} else {
+				resolve(res)
+			}
 		})
-	}
+	})
+}
 

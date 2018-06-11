@@ -43,7 +43,7 @@ const scriptname = path.basename(__filename);
 const funcall = `../fun/${scriptname}`
 const myFunc = require(funcall)
 
-class Thing {
+module.exports = class Thing {
 
 	constructor(x) {
 		this.x = x
@@ -81,9 +81,7 @@ class Thing {
 	}
 
 	update (x) {
-		if (!this.x) {
-			return
-		} else {
+		if (this.x) {
 			this.x = x
 		}
 		return this
@@ -91,9 +89,7 @@ class Thing {
 
 	destroy (x) {
 		if (this.x) {
-			this.x = '
-		} else {
-			this.x = x
+			this.x = 'deleted'
 		}
 		return this
 	}
