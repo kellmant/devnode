@@ -3,11 +3,12 @@ const axios = require('axios')
 
 
 
-module.exports.read = function (x) {
+module.exports = function (x) {
+	console.log(`sending ${x.url} to api call . . . `)
 	return new Promise(function(resolve, reject) {
 		axios.defaults.headers.common['Accept'] = 'application/json'
 		axios(x)
-		.then(function (value, err) {
+		.then(function (res, err) {
 			if (err) {
 				reject(err)
 			} else {
