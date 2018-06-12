@@ -14,27 +14,31 @@
 const path = require('path');
 const scriptname = path.basename(__filename);
 const classcall = `../class/${scriptname}`
-const myClass = require(classcall)
+//const myClass = require(classcall)
+//const doAuth = require('../bin/auth')
+const doWrite = require('../fun/writefile')
+const Cptoken = require('../class/token')
+//const cpSession = require('../playground/session.json')
 
 // example runtime for your class method
 //
 
-module.exports = async (args) => {
+module.exports = async () => {
 	try {
-		//if (!args._[1]) {
-		//	require('../bin/help')(args)
-		//	return
-		//}
-		console.dir(args)
-		const myThing = new myClass(args)
-		myThing.print()
-		//await myThing.setAuth()
-		//await myThing.print()
-		//let myapi = await myThing.getToken()
-		//await console.dir(myapi.data)
-		//return myapi.data
+		const cpSession = require('../playground/session.json')
+		if (!cpSession.uid) {
+			require('../bin/help')
+			return
+		}
+		const endToken = new Cptoken(cpSession)
+		//
+		let myclose = await endToken.closeToken(endToken)
+		await doWrite('session', myclose.data)
+		await console.dir(myclose.data)
 	} catch (err) {
+		console.log('ERROR IN SESSION LOGIN for %j', cpSession)
 		console.log(err)
+		return process.exit(1)
 	}
 }
 

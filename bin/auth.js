@@ -15,6 +15,8 @@ const path = require('path');
 const scriptname = path.basename(__filename);
 const classcall = `../class/${scriptname}`
 const myClass = require(classcall)
+const doWrite = require('../fun/writefile')
+//const Cptoken = require('../class/token')
 
 // example runtime for your class method
 //
@@ -26,17 +28,25 @@ module.exports = async (args) => {
 			return
 		}
 		console.dir(args._[1])
-		const myThing = new myClass(args._[1])
-		//myThing.print()
-		await myThing.setAuth()
-		//await myThing.print()
-		let myapi = await myThing.getToken()
+		const mySession = new myClass(args._[1])
+		mySession.print()
+		await mySession.setAuth()
+		//await mySession.print()
+		let myapi = await mySession.getToken()
+		await doWrite('session', myapi.data)
+		return myapi.data
 		//await console.dir(myapi.data)
-		//return myapi.data
-		let myclose = await myThing.closeToken(myapi.data)
-		await console.dir(myclose.data)
+		//const myToken = await new Cptoken(myapi.data)
+		//return myToken
+		//await myToken.print()
+		//await console.dir(myToken)
+		//return await myapi.data
+		//let myclose = await  myThing.closeToken(myToken)
+		//await console.dir(myclose.data)
 	} catch (err) {
+		console.log('ERROR IN SESSION LOGIN for ' + args)
 		console.log(err)
+		return process.exit(1)
 	}
 }
 
