@@ -3,11 +3,11 @@ const Objectclass = require('../class/object')
 
 module.exports = async (x) => {
 	try {
+		var cpRes = {}
 		for (var i in x) {
 			for (var j in x[i]) {
 				const myObjs = Object.keys(x[i][j]).reduce((p, c) => ({...p, [c]: x[i][j][c]}), {})
 				var cpType = myObjs.type
-				let cpRes = {}
 				//if (myObjs.state) {
 				//	var cpUid = myObjs.uid
 				//	var cpName = myObjs.name
@@ -26,11 +26,12 @@ module.exports = async (x) => {
 					continue
 				}
 				//myObjs.mycmd = '/' + cpName
-				await console.dir(cpRes)
-				await console.log('\n')
+				//await console.dir(cpRes)
+				//await console.log('\n')
 				//return myObjs
 			}
 		}
+		return cpRes
 	} catch (err) {
 		console.error(err)
 	}
