@@ -42,7 +42,7 @@ module.exports = async () => {
 		//await console.dir(mydata)
 		//await console.dir(mypage)
 		let myparsed = await doParse(myshow.data)
-		//await console.dir(myparsed)
+		await console.dir(myparsed)
 		if (mypage.total > mydata.offset) {
 			mydata.offset = Number(mydata.offset) + Number(mydata.limit)
 				while (mypage.total > mydata.offset) {
@@ -52,7 +52,7 @@ module.exports = async () => {
 					mypage = await Myevent.setPage(myshow.data.from, myshow.data.to, myshow.data.total)
 					//await console.dir(myshow.data.objects)
 					let myparsed = await doParse(myshow.data)
-					//await console.dir(myparsed)
+					await console.dir(myparsed)
 					//await Myevent.print()
 					console.log(`${mydata.offset} of ${mypage.total} objects indexed`)
 					mydata.offset = Number(mydata.offset) + Number(mydata.limit)
