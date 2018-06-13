@@ -1,6 +1,6 @@
 {
   "name": "dev",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "bin": {
     "ctrl": "bin/ctrl"
   },
@@ -14,7 +14,7 @@
     "url": "git+https://github.com/kellmant/devnode.git"
   },
   "keywords": [
-    "ctrl", 
+    "ctrl",
     "api",
     "classes",
     "dev",
@@ -24,9 +24,8 @@
   "license": "MIT",
   "homepage": "https://github.com/kellmant/node#readme",
   "dependencies": {
-	"axios": "^0.18.0",
-	"minimist": "^1.2.0",
-	"node-etcd": "^5.1.0"
+    "axios": "^0.18.0",
+    "minimist": "^1.2.0",
+    "node-etcd": "^5.1.0"
   }
 }
-

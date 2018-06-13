@@ -7,10 +7,10 @@
 	    [command] 	   Description
 	    =================================================
 	     version  ... show controller version
-	     keystore ... example etcd class method
-	     api      ... example api call with axios
+	     keystore ... etcd class method for key management
 	     login    ... login to <CPapiHost>
 	     logout   ... end current session login
+	     try      ... example api call for check point objects
 	
 		use 'ctrl help [command]' for more info
 	    =================================================
@@ -20,14 +20,14 @@
 		ctrl keystore --<option> <setting>
 
 		 --keyhost ..... <hostname for etcd service>
-		 --key      ..... <name of key>
+		 --key     ..... <name of key>
 
 		                          `,
 
-	api:`
-		ctrl api --<key> <value>
+	try:`
+		ctrl try
 
-		 --key     ..... <value to assign>
+		           ..... fixed config for test
 
 		                           `,
 
