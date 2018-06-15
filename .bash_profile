@@ -125,8 +125,13 @@ function job_color()
 
 #============================================================
 promptls () {
-    pmptls=$(ls -xF1 --color=always "$PWD" | tr '\n' ' ' | cut -c -900) 2>/dev/null
+    listit=$(ls -xF1u --color=always "$PWD") 
+    cntit=$(echo "$listit" | wc -l)
+    pmptls=$(echo -e "$listit" | tr '\n' ' ' | cut -c -640) 
     echo -en "${pmptls[@]}"
+        if [ $cntit -gt 1 ] ; then
+            echo -en " ${BWhite} . . . $cntit items ${NC}" 
+        fi
 }
 
 promptpwd () {
@@ -166,7 +171,6 @@ prompturl () {
 
 
 promptgit () {
-    if [ -d .git ] ; then
     gitstat=$(git status | tail -n 1 | tr -d '\n')
     gitls=$(git status --porcelain -s)
     gitcnt=$(echo $gitls | wc -l)
@@ -176,16 +180,6 @@ promptgit () {
         if [ $gitcnt -gt 1 ] ; then
             echo -en "${BWhite} . . . $gitcnt changed files ${NC}"
         fi
-    #git status -s -z
-    else
-    listit=$(ls -xF1u --color=always "$PWD") 
-    cntit=$(echo "$listit" | wc -l)
-    pmptls=$(echo -e "$listit" | tr '\n' ' ' | cut -c -640) 
-    echo -en "${pmptls[@]}"
-        if [ $cntit -gt 1 ] ; then
-            echo -en " ${BWhite} . . . $cntit items ${NC}" 
-        fi
-   fi
 }
 
 promptsession () {
@@ -343,10 +337,11 @@ PS1=${PS1}"\[${BGreen}\]<= \[${Green}\]done \[${BYellow}\][\$(checkexit)\$(promp
 PS1=${PS1}"\[${Yellow}\][\[${BPurple}\]\@ \d\[${Yellow}\]]\[${NC}\]\n"
         PS1=${PS1}"\n\[${Yellow}\][${systype}\[${BYellow}\]\[${sysback}\]\$(promptsys)\[${Yellow}\] role:\[${SU}\]\u\[${Yellow}\]]\[${NC}\]"
         PS1=${PS1}":\[${Yellow}\][cmd:\[${Green}\]\!\[${Yellow}\] done:\[${BRed}\]\#\[${Yellow}\]][Clan:\[${BGreen}\] \$(promptscore) \[${Yellow}\]]\[${NC}\]"
-	PS1=${PS1}"\n\[${Yellow}\]|_/Session ID: \[${BBlue}\]\$(promptuid) \[${Yellow}\]API: \[${BGreen}\]\$(prompturl)\[${NC}\]\n"
+	#PS1=${PS1}"\n\[${Yellow}\]|_/Session ID: \[${BBlue}\]\$(promptuid) \[${Yellow}\]API: \[${BGreen}\]\$(prompturl)\[${NC}\]\n"
 	# set the prompt
+    	PS1=${PS1}"\n\[${Yellow}\][\[${NC}\]\$(promptgit)\[${Yellow}\]]\n"
     PS1=${PS1}"\[${Yellow}\]|_/DIR[\[${BWhite}\]\$(promptpwd) \[${Yellow}\]]"
-    	PS1=${PS1}"\[${Yellow}\]|_/FILES[\[${NC}\]\$(promptgit)\[${Yellow}\]]"
+    	PS1=${PS1}"\[${Yellow}\]|[\[${NC}\]\$(promptls)\[${Yellow}\]]"
 	PS1=${PS1}"\n\[${BGreen}\]=> \[${NC}\]"
         # Set title of current xterm:
         #PS1=${PS1}"\[\e]0;[\u@\h] \w\a\]"
