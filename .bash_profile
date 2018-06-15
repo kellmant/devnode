@@ -171,7 +171,9 @@ prompturl () {
 
 
 promptgit () {
-    gitstat=$(git status | tail -n 1 | tr -d '\n')
+	mygitt=$(git status 2> /dev/null)
+	if [ $? -eq 0 ] ; then
+	gitstat=$(echo $mygit | tail -n 1 | tr -d '\n')
     gitls=$(git status --porcelain -s)
     gitcnt=$(echo $gitls | wc -l)
     gitinfo=$(echo -e "$gitls" | tr '\n' ' ' | cut -c -640)
@@ -180,6 +182,10 @@ promptgit () {
         if [ $gitcnt -gt 1 ] ; then
             echo -en "${BWhite} . . . $gitcnt changed files ${NC}"
         fi
+	else
+	echo -en "${Yellow} Not a GiT repository ${NC}"
+	fi
+
 }
 
 promptsession () {

@@ -104,7 +104,9 @@ etcdctl --endpoints http://keystore.east1:2379 set usr/$BUDDY/ninja/$shellstart 
 #source ~/.bash_profile
 echo
 echo ". . . dumping keystore . . ."
-/usr/local/bin/dumpkeys
+#/usr/local/bin/dumpkeys
+TSTAMP=$(date +%s)
+curl -L http://keystore.toonces:2379/v2/keys/?recursive=true -o /web/${TSTAMP}dump.json
 #TermRecord -o /hack/live.html -c 'bash -l'
 #mv -f /hack/index.html /hack/$(date +"%y%m%d-%H%M%S").html
 #mv -f /hack/live.html /hack/index.html
