@@ -17,7 +17,8 @@ const classcall = `../class/${scriptname}`
 //const myClass = require(classcall)
 const doAuth = require('../bin/auth')
 const doWrite = require('../fun/writefile')
-const doParse = require('../fun/anyobj')
+const doKey = require('../fun/writekey')
+const doParse = require('../fun/objkey')
 const cpSession = require('../playground/session.json')
 const Cptoken = require('../class/token')
 
@@ -41,8 +42,8 @@ module.exports = async () => {
 		let mypage = await Myevent.setPage(myshow.data.from, myshow.data.to, myshow.data.total)
 		//await console.dir(mydata)
 		//await console.dir(mypage)
-		let myparsed = await doParse(myshow.data)
-		await console.dir(myparsed)
+		await doParse(myshow.data)
+		//await console.dir(myparsed)
 		if (mypage.total > mydata.offset) {
 			mydata.offset = Number(mydata.offset) + Number(mydata.limit)
 			while (mypage.total > mydata.offset) {
@@ -51,10 +52,10 @@ module.exports = async () => {
 				myshow = await Myevent.showObjects(cpSession, mydata)
 				mypage = await Myevent.setPage(myshow.data.from, myshow.data.to, myshow.data.total)
 				//await console.dir(myshow.data.objects)
-				let myparsed = await doParse(myshow.data)
-				await console.dir(myparsed)
+				await doParse(myshow.data)
+				//await console.dir(myparsed)
 				//await Myevent.print()
-				console.log(`${mydata.offset} of ${mypage.total} objects indexed`)
+				//console.log(`${mydata.offset} of ${mypage.total} objects indexed`)
 				mydata.offset = Number(mydata.offset) + Number(mydata.limit)
 			}
 			//console.log(`${mydata.offset} of ${mypage.total} objects indexed`)
