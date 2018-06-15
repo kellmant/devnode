@@ -13,8 +13,8 @@ module.exports = async (x) => {
 					cpRes = cpData.host(myObjs)
 				} else if (cpType == 'network') {
 					cpRes = cpData.network(myObjs)
-				} else if (cpType == 'group') {
-					cpRes = cpData.group(myObjs)
+				//} else if (cpType == 'group') {
+				//	cpRes = cpData.group(myObjs)
 				} else {
 					continue
 				}
