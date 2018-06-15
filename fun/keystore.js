@@ -15,8 +15,8 @@ module.exports.read = function (x) {
 }
 
 module.exports.update =  function (x) {
-		const etcd = new Etcd(x.keystore)
 		return new Promise(function(resolve, reject) {
+			const etcd = new Etcd(x.keyhost)
 			etcd.set(x.key, x.value, x.options, function (err, res) {
 			if (err) {
 				reject(err)
@@ -28,7 +28,7 @@ module.exports.update =  function (x) {
 }
 
 module.exports.create = function (x) {
-		const etcd = new Etcd(x.keystore)
+		const etcd = new Etcd(x.keyhost)
 		return new Promise(function(resolve, reject) {
 			etcd.create(x.key, x.value, x.options, function (err, res) {
 			if (err) {

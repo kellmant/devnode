@@ -56,8 +56,12 @@ module.exports = class Keystore {
 	}
 
 	setOpt (x) {
-		if (x.recursive || !this.options.recursive)
-		this.options.recursive = x.recursive || false
+		if (x.recursive) {
+		this.options.recursive = x.recursive
+		}
+		if (x.ttl) {
+			this.options.ttl = x.ttl
+		}
 		return this
 	}
 
@@ -67,6 +71,12 @@ module.exports = class Keystore {
 		return this
 	}
 
+	async setKey (x, y) {
+		this.key = x 
+		this.value = y
+		this.result = await keystore.update(this)
+		return this
+	}
 
 
 }
