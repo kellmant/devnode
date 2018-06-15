@@ -8,6 +8,7 @@
 	    =================================================
 	     version  ... show controller version
 	     keystore ... etcd class method for key management
+	     setkey   ... set key value in keystore
 	     login    ... login to <CPapiHost>
 	     logout   ... end current session login
 	     try      ... example api call for check point objects
@@ -17,10 +18,20 @@
 							`,
 	
 	keystore:`
-		ctrl keystore --<option> <setting>
+		ctrl keystore --[option] <setting>
 
 		 --keyhost ..... <hostname for etcd service>
 		 --key     ..... <name of key>
+
+		                          `,
+
+	setkey:`
+		ctrl setkey --[option] <setting>
+
+		 --keyhost ..... hostname for etcd service
+		 --key     ..... name of key
+		 --value   ..... key value to set
+		 --ttl     ..... time to live of key in seconds
 
 		                          `,
 
