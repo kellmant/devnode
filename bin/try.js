@@ -45,20 +45,19 @@ module.exports = async () => {
 		await console.dir(myparsed)
 		if (mypage.total > mydata.offset) {
 			mydata.offset = Number(mydata.offset) + Number(mydata.limit)
-				while (mypage.total > mydata.offset) {
+			while (mypage.total > mydata.offset) {
 				//console.log(`${mypage.total} is more than the ${mypage.to}`)
-					mydata = await Myevent.setOff(mydata.offset, 500, 'full')
-					myshow = await Myevent.showObjects(cpSession, mydata)
-					mypage = await Myevent.setPage(myshow.data.from, myshow.data.to, myshow.data.total)
-					//await console.dir(myshow.data.objects)
-					let myparsed = await doParse(myshow.data)
-					await console.dir(myparsed)
-					//await Myevent.print()
-					console.log(`${mydata.offset} of ${mypage.total} objects indexed`)
-					mydata.offset = Number(mydata.offset) + Number(mydata.limit)
-				}
+				mydata = await Myevent.setOff(mydata.offset, 500, 'full')
+				myshow = await Myevent.showObjects(cpSession, mydata)
+				mypage = await Myevent.setPage(myshow.data.from, myshow.data.to, myshow.data.total)
+				//await console.dir(myshow.data.objects)
+				let myparsed = await doParse(myshow.data)
+				await console.dir(myparsed)
+				//await Myevent.print()
+				console.log(`${mydata.offset} of ${mypage.total} objects indexed`)
+				mydata.offset = Number(mydata.offset) + Number(mydata.limit)
+			}
 			//console.log(`${mydata.offset} of ${mypage.total} objects indexed`)
-
 		}
 
 		//await doWrite('objects', myshow.data.objects)
