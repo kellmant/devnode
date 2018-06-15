@@ -21,6 +21,7 @@ module.exports.update =  function (x) {
 			if (err) {
 				reject(err)
 			} else {
+				process.stdout.write('.')
 				resolve(res)
 			}
 		})
