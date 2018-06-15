@@ -62,10 +62,10 @@ module.exports = class CPtoken {
 
 	async showObjects (x, d) {
 		const mypost = {}
-		const mydata = { 
+		let mydata = { 
 			'offset': d.offset,
 			'limit': d.limit,
-			['details-level'] : d.details
+			'details-level' : d['details-level']
 		}
 
 		let mymethod = 'post'

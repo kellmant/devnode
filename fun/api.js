@@ -4,7 +4,7 @@ const axios = require('axios')
 
 
 module.exports = function (x) {
-	console.log(`sending ${x.url} to api call . . . `)
+	//console.dir(x)
 	return new Promise(function(resolve, reject) {
 		axios.defaults.headers.common['Accept'] = 'application/json'
 		axios(x)
