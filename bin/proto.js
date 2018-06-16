@@ -15,6 +15,8 @@ const path = require('path');
 const scriptname = path.basename(__filename);
 //const classcall = `../class/${scriptname}`
 //const myClass = require(classcall)
+const cpLive = require('../fun/session')
+//let cpSession = await cpLive()
 
 // example runtime for your class method
 //

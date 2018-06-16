@@ -9,8 +9,19 @@ module.exports = class CPObj {
 	constructor(x) {
 		//this.uid = x.uid || 'not defined'
 		this.name = x.name || 'no name'
-		this['set-if-exists'] = 'true'
+		//this['set-if-exists'] = 'true'
 		//this.type = x.type || 'not my type'
+	}
+
+	dump (x) {
+		return this
+	}
+
+	tag (x) {
+		if (!this.tags.x) {
+		this.tags = x.tags
+		}
+		return this
 	}
 
 	host (x) {
@@ -45,8 +56,19 @@ module.exports = class CPObj {
 	//	const myGroups = Object.keys(x).reduce((p, c) => ({...p, [c]: x[c]}), {})
 			//mymembers.push(x)
 //		}
-		this.x = x
+		//this.members = x.members
 		return this
 	}
+
+	range (x) {
+		if (x['ip-address-first']) {
+		this['ip-address-first'] = x['ip-address-first']
+		}
+		if (x['ip-address-last']) {
+		this['ip-address-last'] = x['ip-address-last']
+		}
+		return this
+	}
+
 
 }

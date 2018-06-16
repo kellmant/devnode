@@ -17,6 +17,7 @@ const classcall = `../class/${scriptname}`
 //const myClass = require(classcall)
 const doAuth = require('../bin/auth')
 const doWrite = require('../fun/writefile')
+const doKey = require('../fun/writekey')
 const Cptoken = require('../class/token')
 //const CpSession = require('../playground/session.json')
 
@@ -32,6 +33,11 @@ module.exports = async (args) => {
 		const myAuth = await doAuth(args)
 		let myToken = await new Cptoken(myAuth)
 		await doWrite('token', myToken)
+		const myKey = {}
+		myKey.key = await 'api/session'
+		myKey.value = await JSON.stringify(myToken)
+		myKey.ttl = await myToken.ttl
+		await doKey(myKey)
 		await console.dir(myToken.uid)
 		// run api commands here
 		//

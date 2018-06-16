@@ -11,6 +11,8 @@
 	     setkey   ... set key value in keystore
 	     login    ... login to <CPapiHost>
 	     logout   ... end current session login
+	     cache    ... capture all uid as json object to keystore
+	     object   ... show objects on cpapi store
 	     try      ... example api call for check point objects
 	
 		use 'ctrl help [command]' for more info
@@ -41,6 +43,16 @@
 		           ..... fixed config for test
 
 		                           `,
+
+	object:`
+		ctrl object --[option] <setting>
+
+		 --type       ..... specify type of object to show
+		 --filter     ..... filter expression
+
+		 ex. ctrl object --type host --filter "MyHost"
+
+		                          `,
 
 	login:`
 		ctrl login <host>

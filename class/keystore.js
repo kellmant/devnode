@@ -5,7 +5,7 @@ const scriptname = path.basename(__filename);
 const funcall = `../fun/${scriptname}`
 
 const keystore = require(funcall)
-const localkeys = process.env.ETCDCTL_ENDPOINTS 
+const localkeys = process.env.ETCDCTL_ENDPOINTS
 
 //Constructor
 // ES6 style
@@ -20,9 +20,9 @@ module.exports = class Keystore {
 	}
 
 	print () {
-		console.log(this)
+		console.dir(this)
 		console.log('\n')
-		
+
 	}
 
 	resVal () {
@@ -38,7 +38,7 @@ module.exports = class Keystore {
 		//console.log(Object.entries(this.result.node.nodes))
 		//console.log(Object.keys(this.result.node.nodes))
 		//console.log(Object.values(this.result.node.nodes))
-		
+
 	}
 
 	getKeyhost () {
@@ -47,7 +47,7 @@ module.exports = class Keystore {
 
 	setKeyhost (x) {
 		if (!x) {
-			const localkeys = process.env.ETCDCTL_ENDPOINTS 
+			const localkeys = process.env.ETCDCTL_ENDPOINTS
 			this.keyhost = localkeys
 		} else {
 			this.keyhost = `http://${x}:2379`
@@ -66,36 +66,32 @@ module.exports = class Keystore {
 	}
 
 	async getKey (x) {
-		this.key = x 
+		this.key = x
 		this.result = await keystore.read(this)
 		return this
 	}
 
 	async setKey (x, y) {
-		this.key = x 
+		this.key = x
 		this.value = y
 		this.result = await keystore.update(this)
 		return this
 	}
 
+	async rmKey (x) {
+		this.options.recursive = true
+		this.key = x
+		this.result = await keystore.destroy(this)
+		return this
+	}
+
+	async getUids () {
+		this.result = await keystore.uids()
+		return this
+	}
+
+
 
 }
 
-/*
-const myopts = {
-	'recursive' : true
-}
-
-const myKeys = new Keystore()
-async function main() {
-	myKeys.print()
-	myKeys.setKeyhost()
-	myKeys.setOpt(myopts)
-	await myKeys.getKey('apiadmin')
-	await myKeys.showRes()
-	//console.log(myopts)
-}
-
-main()
-*/
 

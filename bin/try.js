@@ -11,63 +11,48 @@
 // this will show you return values of your args 
 // for runtime
 //
+const pglimit = 500
+const details = 'standard'
 const path = require('path');
 const scriptname = path.basename(__filename);
 const classcall = `../class/${scriptname}`
 //const myClass = require(classcall)
-const doAuth = require('../bin/auth')
 const doWrite = require('../fun/writefile')
 const doKey = require('../fun/writekey')
-const doParse = require('../fun/objkey')
-const cpSession = require('../playground/session.json')
+// this parser will backup all objects to obj/uid
+//
+//const doParse = require('../fun/objkey')
+// this will just dump the key for analysis
+//const doParse = require('../fun/testobj')
+
+const doParse = require('../fun/used')
+const cpLive = require('../fun/session')
 const Cptoken = require('../class/token')
+const Keystore = require('../class/keystore')
+const cpSession = cpLive()
 
 // example runtime for your class method
 //
 
-module.exports = async () => {
+module.exports = async (args) => {
 	try {
-		if (!cpSession.uid) {
-			require('../bin/help')
-			return
-		}
-		let Myevent = await new Cptoken(cpSession)
-		//await doWrite('token', myToken)
 		//await console.dir(cpSession)
-		// run api commands here
-		//
-		await Myevent.print()
-		let mydata = await Myevent.setOff(0, 500, 'full')
-		let myshow = await Myevent.showObjects(cpSession, mydata)
-		let mypage = await Myevent.setPage(myshow.data.from, myshow.data.to, myshow.data.total)
-		//await console.dir(mydata)
-		//await console.dir(mypage)
-		await doParse(myshow.data)
-		//await console.dir(myparsed)
-		if (mypage.total > mydata.offset) {
-			mydata.offset = Number(mydata.offset) + Number(mydata.limit)
-			while (mypage.total > mydata.offset) {
-				//console.log(`${mypage.total} is more than the ${mypage.to}`)
-				mydata = await Myevent.setOff(mydata.offset, 500, 'full')
-				myshow = await Myevent.showObjects(cpSession, mydata)
-				mypage = await Myevent.setPage(myshow.data.from, myshow.data.to, myshow.data.total)
-				//await console.dir(myshow.data.objects)
-				await doParse(myshow.data)
-				//await console.dir(myparsed)
-				//await Myevent.print()
-				//console.log(`${mydata.offset} of ${mypage.total} objects indexed`)
-				mydata.offset = Number(mydata.offset) + Number(mydata.limit)
-			}
-			//console.log(`${mydata.offset} of ${mypage.total} objects indexed`)
+		if (!cpSession.uid) {
+			require('../bin/login')
+			console.log('No Active Session, please login')
+		}
+		if (args) {
+		//	require('../bin/login')
+			console.dir(args)
 		}
 
-		//await doWrite('objects', myshow.data.objects)
-		//await console.dir(myshow.data)
-		//
-		//let myclose = await myToken.closeToken(myToken)
-		//await doWrite('session', myclose.data)
-		//await console.dir(myclose.data)
-		//return mypage
+		let Mycache = await new Keystore()
+		let myUsed = await Mycache.getUids()
+		for (var i in myUsed) {
+		await console.log(myUsed[i])
+		}
+		//await console.dir(myUsed)
+		return
 	} catch (err) {
 		console.log('ERROR IN SESSION event for %j', cpSession)
 		console.log(err)

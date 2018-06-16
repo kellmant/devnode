@@ -347,8 +347,8 @@ PS1=${PS1}"\[${Yellow}\][\[${BPurple}\]\@ \d\[${Yellow}\]]\[${NC}\]\n"
 	# set the prompt
     	PS1=${PS1}"\n\[${Yellow}\][\[${NC}\]\$(promptgit)\[${Yellow}\]]\n"
     PS1=${PS1}"\[${Yellow}\]|_/DIR[\[${BWhite}\]\$(promptpwd) \[${Yellow}\]]"
-    	PS1=${PS1}"\[${Yellow}\]|[\[${NC}\]\$(promptls)\[${Yellow}\]]"
-	PS1=${PS1}"\n\[${BGreen}\]=> \[${NC}\]"
+    	PS1=${PS1}"\n\[${Yellow}\]  |_/[\[${NC}\]\$(promptls)\[${Yellow}\]]"
+	PS1=${PS1}"\n\n\[${BGreen}\]=> \[${NC}\]"
         # Set title of current xterm:
         #PS1=${PS1}"\[\e]0;[\u@\h] \w\a\]"
 
@@ -379,8 +379,9 @@ export TZ='America/Toronto'
 alias uat='cd ~'
 alias dev='cd ~/playground'
 alias web='cd /web'
-alias bin='cd ~/cmds'
-alias util='cd ~/utils'
+alias bin='cd ~/bin'
+alias class='cd ~/class'
+alias fun='cd ~/fun'
 alias add='git add'
 alias mods='git diff'
 alias commit='git commit -m'

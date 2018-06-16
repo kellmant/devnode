@@ -17,23 +17,32 @@ const classcall = `../class/${scriptname}`
 //const myClass = require(classcall)
 //const doAuth = require('../bin/auth')
 const doWrite = require('../fun/writefile')
+const doKey = require('../fun/writekey')
 const Cptoken = require('../class/token')
 //const cpSession = require('../playground/session.json')
+const Keysession = require('../class/keystore')
 
 // example runtime for your class method
 //
 
 module.exports = async () => {
 	try {
-		const cpSession = require('../playground/session.json')
+		const cpKeys = new Keysession('keystore.toonces')
+		await cpKeys.getKey('api/session')
+		const cpsend = await cpKeys.resVal()
+		const cpSession = await JSON.parse(cpsend)
+		await console.log(typeof cpSession)
 		if (!cpSession.uid) {
-			require('../bin/help')
+			require('../bin/login')
 			return
 		}
-		const endToken = new Cptoken(cpSession)
+		//await cpKeys.setOpt(cpSession)
+		const endToken = await new Cptoken(cpSession)
 		//
 		let myclose = await endToken.closeToken(endToken)
-		await doWrite('session', myclose.data)
+		myclose.key = 'api/session'
+		myclose.value = JSON.stringify(myclose.data)
+		await doKey(myclose)
 		await console.dir(myclose.data)
 	} catch (err) {
 		console.log('ERROR IN SESSION LOGIN for %j', cpSession)
