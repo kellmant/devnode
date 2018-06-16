@@ -15,15 +15,22 @@ const doKey = require('../fun/writekey')
 
 module.exports = async (x) => {
 	try {
+		let mycount = 0
 		var cpRes = {}
 		for (var i in x) {
 			for (var j in x[i]) {
 				const myObj = Object.keys(x[i][j]).reduce((p, c) => ({...p, [c]: x[i][j][c]}), {})
-				cpRes.key = 'obj/uid/' + myObj.uid
+				if (myObj.type == 'host' || myObj.type == 'network') {
+					mycount++
+				cpRes.key = 'uid/' + myObj.uid 
 				cpRes.value = JSON.stringify(myObj)
 				doKey(cpRes)
+			process.stdout.write('\r Indexing to keystore : ' + mycount)
+				} else {
+					continue
 				}
 			}
+		}
 		return
 	} catch (err) {
 		console.error(err)

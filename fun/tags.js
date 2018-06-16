@@ -11,7 +11,7 @@ module.exports = async (x) => {
 			for (var j in x[i]) {
 				const myObjs = Object.keys(x[i][j]).reduce((p, c) => ({...p, [c]: x[i][j][c]}), {})
 				var cpType = myObjs.type
-				cpRes.key = 'obj/' + cpType + '/' + myObjs.uid
+				cpRes.key = 'obj/tag/' + cpType + '/' + myObjs.uid
 				let cpData = new Objectclass(myObjs)
 				if (cpType == 'host') {
 					cpRes.value = JSON.stringify(cpData.host(myObjs))

@@ -20,7 +20,7 @@ module.exports = async (x) => {
 				}
 			}
 		}
-		return cpRes
+		return
 	} catch (err) {
 		console.error(err)
 	}

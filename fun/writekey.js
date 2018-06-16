@@ -13,6 +13,9 @@ module.exports = async (x) => {
 		if (x.ttl) {
 			myStore.setOpt(x)
 		}
+		if (typeof x.value == 'object') {
+			postval = JSON.stringify(x.value)
+		}
 		if (x.key && x.value) {
 			await myStore.setKey(x.key, x.value)
 		}
