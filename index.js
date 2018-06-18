@@ -1,7 +1,5 @@
 const minimist = require('minimist')
-const showme = function(x) {
-	console.dir(x)
-}
+const fs = require('fs')
 
 const mload = './bin/'
 console.log('\n')
@@ -10,16 +8,19 @@ module.exports = () => {
 //
 	let cmd = 'help'
 	const args = minimist(process.argv.slice(2))
-	if (typeof args._[0] !== 'undefined') {
+	console.log('arg input: %j', args)
+	if (fs.existsSync(mload + args._[0] + '.js')) {
 		cmd = args._[0] 
+		console.log('RUNTIME: ctrl ' + cmd)
+	} else {
+		console.log('ctrl command not found : ' + args._[0])
 	}
-	console.log('showing cmd arg input: %j', cmd)
 
-	if (args._[0] == 'version' || args.version || args.v) {
+	if (args._[0] == 'ctrl' || args.version || args.v) {
 		console.log('version args : %j', args)
 		cmd = 'version'
 	}
-	if (args._[0] == 'help' || args.help || args.h) {
+	if (args.help || args.h) {
 		console.log('help args : %j', args)
 		cmd = 'help'
 	}
