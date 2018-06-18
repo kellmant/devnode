@@ -45,8 +45,21 @@ module.exports = class Cpapi {
 		return this
 	}
 
-	addData (mydata) {
-		this.data.push(mydata)
+	addData (x) {
+		if (x.filter) {
+		this.data.filter = x.filter
+		}
+		if (x.type) {
+		this.data.type = x.type
+		}
+		if (x.ip) {
+		this.data['ip-only'] = x.ip
+		}
+		return this
+	}
+
+	rmData () {
+		this.data = {}
 		return this
 	}
 
@@ -57,16 +70,19 @@ module.exports = class Cpapi {
 	}
 
 	show () {
-		console.log(Object.getOwnPropertyNames(this))
-		console.log(Object.getOwnPropertyDescriptors(this))
-		console.log(Object.getOwnPropertySymbols(this))
-		//console.log(Object.keys(this) + ' : ' + Object.values(this))
-		//console.log(Object.values(this))
+		//console.log(Object.getOwnPropertyNames(this.response.data))
+		console.log(Object.getOwnPropertyDescriptors(this.response.data))
+		//console.log(Object.getOwnPropertySymbols(this.response.data))
+		//console.log(Object.keys(this.response.data) + ' : ' + Object.values(this.response.data))
+		//let myvalue = (Object.values(this.response.data))
+		//let mykey = (Object.keys(this.response.data))
+		//console.log(mykey + ' : ' + myvalue)
 	}
 
 	async apiPost () {
-		let apires = await myApi(this).catch((err) => { throw new Error(err)})
-		return apires
+		this.response = {}
+		this.response = await myApi(this).catch((err) => { throw new Error(err)})
+		return this.response.data
 	}
 
 }

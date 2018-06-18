@@ -59,7 +59,7 @@ module.exports = class CPtoken {
 		mypost.baseURL = myurl
 		mypost.url = mycmd
 		//console.dir(mypost)
-		let myres = await myApi(mypost)
+		let myres = await myApi(mypost).catch((err) => { throw new Error(err)})
 		return myres
 	}
 
@@ -84,23 +84,14 @@ module.exports = class CPtoken {
 		mypost.headers = myheaders
 		mypost.baseURL = myurl
 		mypost.url = mycmd
-		let myres = await myApi(mypost)
+		let myres = await myApi(mypost).catch((err) => { throw new Error(err)})
 		return myres
 	}
 
-	async usedIn (x, d, y) {
+	async usedIn (x, d) {
 		const mypost = {}
-		let mydata = {
-			'offset': d.offset,
-			'limit': d.limit,
-			'details-level' : d['details-level']
-		}
-
-		mydata.uid = x.uid
-		if (y.filter) {
-			mydata.filter = y.filter
-		}
-
+		let mydata = {}
+		mydata.uid = d.uid
 		let mymethod = 'post'
 		let myheaders = { 'X-chkp-sid': x.sid }
 		let myurl = x.url
@@ -110,7 +101,7 @@ module.exports = class CPtoken {
 		mypost.headers = myheaders
 		mypost.baseURL = myurl
 		mypost.url = mycmd
-		let myres = await myApi(mypost)
+		let myres = await myApi(mypost).catch((err) => { throw new Error(err)})
 		return myres
 	}
 
@@ -132,7 +123,7 @@ module.exports = class CPtoken {
 		mypost.headers = myheaders
 		mypost.baseURL = myurl
 		mypost.url = mycmd
-		let myres = await myApi(mypost)
+		let myres = await myApi(mypost).catch((err) => { throw new Error(err)})
 		return myres
 	}
 

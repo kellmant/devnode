@@ -9,17 +9,25 @@ module.exports = class CPObj {
 	constructor(x) {
 		//this.uid = x.uid || 'not defined'
 		this.name = x.name || 'no name'
-		//this['set-if-exists'] = 'true'
+		this['set-if-exists'] = 'true'
+		//this.tags = []
 		//this.type = x.type || 'not my type'
 	}
 
 	dump (x) {
-		return this
+		if (this.x) {
+			return this[x]
+		} else {
+			return this
+		}
 	}
 
 	tag (x) {
-		if (!this.tags.x) {
-		this.tags = x.tags
+		if (!this.tags) {
+			this.tags = x
+		} else {
+		this.tags.push(x)
+		//this.tags =+ x
 		}
 		return this
 	}

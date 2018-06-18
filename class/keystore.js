@@ -14,15 +14,14 @@ const localkeys = process.env.ETCDCTL_ENDPOINTS
 module.exports = class Keystore {
 
 	constructor(keyhost) {
-		this.keyhost = `http://${keyhost}:2379` || 'http://localhost:2379'
+		this.keyhost = localkeys
 		this.options = {}
 		this.result = []
 	}
 
 	print () {
-		console.dir(this)
+		console.log(Object.getOwnPropertyNames(this.result.node.nodes))
 		console.log('\n')
-
 	}
 
 	resVal () {
@@ -73,19 +72,19 @@ module.exports = class Keystore {
 	async setKey (x, y) {
 		this.key = x
 		this.value = y
-		this.result = await keystore.update(this)
+		this.result = await keystore.update(this).catch((err) => { throw new Error(err)})
 		return this
 	}
 
 	async rmKey (x) {
 		this.options.recursive = true
 		this.key = x
-		this.result = await keystore.destroy(this).catch(err => console.log(err.message))
+		this.result = await keystore.destroy(this).catch((err) => { throw new Error(err)})
 		return this
 	}
 
 	async getUids () {
-		this.result = await keystore.uids()
+		this.result = await keystore.uids().catch((err) => { throw new Error(err)})
 		return this
 	}
 
