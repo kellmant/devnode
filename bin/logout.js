@@ -45,8 +45,8 @@ module.exports = async () => {
 		await doKey(myclose)
 		await console.dir(myclose.data)
 	} catch (err) {
-		console.log('ERROR IN SESSION LOGIN for %j', cpSession)
-		console.log(err)
+		console.log('ERROR IN SESSION LOGOUT ' + err.message)
+		console.log('session token in api/ expired? ')
 		return process.exit(1)
 	}
 }
