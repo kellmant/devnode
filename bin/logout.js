@@ -46,7 +46,7 @@ module.exports = async () => {
 		await console.dir(myclose.data)
 	} catch (err) {
 		console.log('ERROR IN SESSION LOGOUT ' + err.message)
-		console.log('session token in api/ expired? ')
+		console.log('session token in api key expired?')
 		return process.exit(1)
 	}
 }

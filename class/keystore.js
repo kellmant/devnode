@@ -47,7 +47,6 @@ module.exports = class Keystore {
 
 	setKeyhost (x) {
 		if (!x) {
-			const localkeys = process.env.ETCDCTL_ENDPOINTS
 			this.keyhost = localkeys
 		} else {
 			this.keyhost = `http://${x}:2379`
@@ -67,7 +66,7 @@ module.exports = class Keystore {
 
 	async getKey (x) {
 		this.key = x
-		this.result = await keystore.read(this)
+		this.result = await keystore.read(this).catch((err) => { throw new Error(err)})
 		return this
 	}
 
@@ -81,7 +80,7 @@ module.exports = class Keystore {
 	async rmKey (x) {
 		this.options.recursive = true
 		this.key = x
-		this.result = await keystore.destroy(this)
+		this.result = await keystore.destroy(this).catch(err => console.log(err.message))
 		return this
 	}
 
