@@ -1,26 +1,22 @@
 
 const Objectclass = require('../class/object')
 const doKey = require('../fun/writekey')
-const Keystore = require('../class/token')
+const Cptoken = require('../class/token')
+const cpLive = require('../fun/session')
 
 
 
 module.exports = async (x) => {
 	try {
-		var cpRes = {}
-		for (var i in x) {
-			for (var j in x[i]) {
-				const myObj = Object.keys(x[i][j]).reduce((p, c) => ({...p, [c]: x[i][j][c]}), {})
-				console.dir(myObj)
-				const Myevent = new Keystore('keystore.toonces')
-				//let mydata = await Myevent.setOff(0, 500, 'full')
+			let cpSession = await cpLive()
+		const Myevent = new Cptoken(cpSession)
 				let mydata = {}
-				mydata.uid = myObj.uid
-				let myshow = await Myevent.whereIn(cpSession, mydata, args)
-		let mypage = await Myevent.setPage(myshow.data.from, myshow.data.to, myshow.data.total)
-		process.stdout.write(' ' + myshow.data.to + ' of ' + myshow.data.total + ' ')
+				mydata.uid = x
+				let myshow = await Myevent.usedIn(cpSession, mydata)
+				await console.dir(myshow)
+				return
 				//var cpType = myObj.type
-				cpRes.key = 'obj/tag/' + myObj.uid + '/' + x[i][j]
+				cpRes.key = 'obj/tag/' + x.filter + myObj.uid + '/' + x[i][j]
 				let cpData = new Objectclass(myshow.data)
 				cpRes.value = JSON.stringify(cpData)
 				await doKey(cpRes)

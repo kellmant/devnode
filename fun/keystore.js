@@ -16,8 +16,8 @@ module.exports.read = function (x) {
 }
 
 module.exports.update =  function (x) {
+		const etcd = new Etcd(x.keyhost)
 		return new Promise(function(resolve, reject) {
-			const etcd = new Etcd(x.keyhost)
 			etcd.set(x.key, x.value, x.options, function (err, res) {
 			if (err) {
 				reject(err)
@@ -30,8 +30,8 @@ module.exports.update =  function (x) {
 }
 
 module.exports.create = function (x) {
-		return new Promise(function(resolve, reject) {
 		const etcd = new Etcd(x.keyhost)
+		return new Promise(function(resolve, reject) {
 			etcd.create(x.key, x.value, x.options, function (err, res) {
 			if (err) {
 				reject(err)
@@ -44,8 +44,8 @@ module.exports.create = function (x) {
 
 
 module.exports.destroy = function (x) {
-		return new Promise(function(resolve, reject) {
 		const etcd = new Etcd(x.keyhost)
+		return new Promise(function(resolve, reject) {
 			etcd.del(x.key, x.options, function (err, res) {
 			if (err) {
 				reject(err)
@@ -56,16 +56,29 @@ module.exports.destroy = function (x) {
 	})
 }
 
-module.exports.uids = function () {
+module.exports.mkdir = function (x) {
+		const etcd = new Etcd(x.keyhost)
 		return new Promise(function(resolve, reject) {
-		const etcd = new Etcd('http://keystore.toonces:2379')
-			etcd.get('obj/tag', { recursive: true }, function (err, res) {
+			etcd.mkdir(x.key, x.options, function (err, res) {
 			if (err) {
 				reject(err)
 			} else {
-				const resObj = etcdObjectify(res.node)
-				console.log(typeof resObj)
-				resolve(resObj)
+				resolve(res)
+			}
+		})
+	})
+}
+
+module.exports.uids = function () {
+		const etcd = new Etcd('http://keystore.toonces:2379')
+		return new Promise(function(resolve, reject) {
+			etcd.get('uid/', { recursive: false }, function (err, res) {
+			if (err) {
+				reject(err)
+			} else {
+				//const resObj = etcdObjectify(res.node)
+				//console.log(typeof resObj)
+				resolve(res.node.nodes)
 			}
 		})
 	})

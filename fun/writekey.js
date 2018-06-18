@@ -21,7 +21,7 @@ module.exports = async (x) => {
 		}
 		return
 	} catch (err) {
-		console.log(err)
+		throw new Error(err)
 	}
 }
 
