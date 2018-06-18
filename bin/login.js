@@ -51,7 +51,7 @@ module.exports = async (args) => {
 		//await doWrite('session', myclose.data)
 		//await console.dir(myclose.data)
 	} catch (err) {
-		console.log('ERROR IN SESSION LOGIN for %j', args)
+		console.log('ERROR IN SESSION LOGIN : ' + err.message )
 		console.log(err)
 		return process.exit(1)
 	}

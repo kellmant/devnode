@@ -45,7 +45,7 @@ module.exports = async (args) => {
 		// run api commands here
 		//
 		await Myevent.print()
-		let mydata = await Myevent.setOff(0, 500, 'full')
+		let mydata = await Myevent.setOff(0, 500, 'standard')
 		let myshow = await Myevent.getMe(cpSession, mydata, args)
 		let mypage = await Myevent.setPage(myshow.data.from, myshow.data.to, myshow.data.total)
 		process.stdout.write(' ' + myshow.data.to + ' of ' + myshow.data.total + ' ')
@@ -57,7 +57,7 @@ module.exports = async (args) => {
 			mydata.offset = Number(mydata.offset) + Number(mydata.limit)
 			while (mypage.total > mydata.offset) {
 				//console.log(`${mypage.total} is more than the ${mypage.to}`)
-				mydata = await Myevent.setOff(mydata.offset, 500, 'full')
+				mydata = await Myevent.setOff(mydata.offset, 500, 'standard')
 				myshow = await Myevent.getMe(cpSession, mydata, args)
 				mypage = await Myevent.setPage(myshow.data.from, myshow.data.to, myshow.data.total)
 				process.stdout.write(' ' + myshow.data.to + ' of ' + myshow.data.total + '      ')

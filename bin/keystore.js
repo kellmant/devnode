@@ -24,10 +24,10 @@ module.exports = async (args) => {
 		}
 		myKeys.print()
 		await myKeys.getKey(args.key)
-		//await myKeys.print()
-		await myKeys.showRes()
-		//let myvalue = await myKeys.resVal()
-		//await console.log(myvalue)
+		await myKeys.print()
+		//await myKeys.showRes()
+		let myvalue = await myKeys.resVal()
+		await return myvalue
 	} catch (err) {
 		console.log(err)
 	}

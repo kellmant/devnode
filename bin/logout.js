@@ -31,9 +31,11 @@ module.exports = async () => {
 		await cpKeys.getKey('api/session')
 		const cpsend = await cpKeys.resVal()
 		const cpSession = await JSON.parse(cpsend)
-		await console.log(typeof cpSession)
-		if (!cpSession.uid) {
-			require('../bin/login')
+		await console.dir(cpSession)
+		if (cpSession.message) {
+			let myhelp = { '_' : ['help', 'login'] }
+			console.log('Session logout message recieved')
+			require('../bin/help')(myhelp)
 			return
 		}
 		//await cpKeys.setOpt(cpSession)

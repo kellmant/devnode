@@ -11,51 +11,120 @@
 // this will show you return values of your args 
 // for runtime
 //
+const delay = async () => {
+	const incmd = {'_':['login', 'opb']}
+	const startup = require('../bin/login')(incmd)
+	await console.log(startup)
+	return startup
+}
+const myoffset = 0
 const pglimit = 500
-const details = 'standard'
+const details = 'uid'
 const path = require('path');
 const scriptname = path.basename(__filename);
 const classcall = `../class/${scriptname}`
 //const myClass = require(classcall)
-const doWrite = require('../fun/writefile')
-const doKey = require('../fun/writekey')
-// this parser will backup all objects to obj/uid
-//
-//const doParse = require('../fun/objkey')
-// this will just dump the key for analysis
-//const doParse = require('../fun/testobj')
 
-const doParse = require('../fun/used')
+const doParse = require('../fun/testobj')
+
 const cpLive = require('../fun/session')
-const Cptoken = require('../class/token')
+const Cpapi = require('../class/cpapi')
 const Keystore = require('../class/keystore')
-const cpSession = cpLive()
+const Cpobject = require('../class/object')
+let mycmd = 'show-objects'
 
 // example runtime for your class method
 //
 
 module.exports = async (args) => {
 	try {
-		//await console.dir(cpSession)
+		let newcpdata = {}
+		await delay()
+		if (args._[1]) {
+			console.log(args._[1])
+			mycmd = args._[1]
+		}
+		const cpSession = await cpLive()
+		await console.dir(cpSession)
 		if (!cpSession.uid) {
 			require('../bin/login')
 			console.log('No Active Session, please login')
 		}
+		let Myapi = await new Cpapi(cpSession)
+		await Myapi.print()
+		await Myapi.setCnt(myoffset, pglimit)
+		await Myapi.setDetail(details)
 		if (args) {
-		//	require('../bin/login')
-			console.dir(args)
+		await Myapi.addData(args)
+		}
+		await Myapi.setCmd(mycmd)
+		await Myapi.print()
+		let mycpres = await Myapi.apiPost()
+		let parsedObj = []
+		parsedObj.push(await doParse(mycpres.objects))
+		if (mycpres.total > mycpres.to) {
+			let inoffset = Number(myoffset) + Number(pglimit)
+			while (mycpres.total > inoffset) {
+				await Myapi.setCnt(inoffset, pglimit)
+				mycpres = await Myapi.apiPost()
+				parsedObj.push(await doParse(mycpres.objects))
+				inoffset = Number(inoffset) + Number(pglimit)
+			}
+		}
+		if (mycmd === 'show-unused-objects') {
+			args.filter = 'unused'
+			args.type = 'object'
+			if (!args.tags) {
+				args.tags = 'unused'
+			}
+		}
+		if (!args.filter) {
+			args.filter = 'all'
+		}
+		if (!args.type) {
+			args.type = 'object'
 		}
 
-		let Mycache = await new Keystore()
-		let myUsed = await Mycache.getUids()
-		for (var i in myUsed) {
-		await console.log(myUsed[i])
+		let mycnt = 0
+		var newArray = Array.from(Object.values(parsedObj))
+		for (var i in newArray) {
+			for (var j in newArray[i]) {
+				let myUid = 'uid/' + newArray[i][j]
+				const myObj = new Keystore()
+				await myObj.getKey(myUid)
+				let myCached = JSON.parse(await myObj.resVal())
+				
+				//console.log(' obj/' + args.filter + '/' + newArray[i][j] + ' = ' + args.type)
+				//await console.log(myCached.type)
+				const myNewobj = new Cpobject(myCached)
+				await myNewobj.host(myCached)
+				await myNewobj.network(myCached)
+				//await myNewobj.tag(args.filter)
+				if (args.tags) {
+				await myNewobj.tag(args.tags)
+				}
+				let tagDump = await myNewobj.dump('tags')
+				let objDump = await myNewobj.dump()
+				let cpTagged = {
+					'key' : 'tag/' + args.filter + '/' + myCached.type + '/' + myCached.uid,
+					'value' : JSON.stringify(objDump),
+					'tagkey' : 'obj/set/' + args.filter,
+					'tagvalue' : JSON.stringify(args.tags)
+				}
+
+				await myObj.setKey(cpTagged.key, cpTagged.value)
+				mycnt++
+				await myObj.setKey(cpTagged.tagkey, cpTagged.tagvalue)
+			}
 		}
-		//await console.dir(myUsed)
-		return
+		console.log(mycnt)
 	} catch (err) {
-		console.log('ERROR IN SESSION event for %j', cpSession)
+		console.log('ERROR IN SESSION event : ' + err.message)
 		console.log(err)
+	} finally {
+		let runcmd = {'_':['logout']}
+		require('../bin/logout')(runcmd)
+		return
 	}
 }
 

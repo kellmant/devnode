@@ -11,32 +11,22 @@
 // this will show you return values of your args 
 // for runtime
 //
-const doWrite = require('../fun/writefile')
-const doKey = require('../fun/writekey')
-// this parser will backup all objects to obj/uid
+// this parser will backup all objects to uid/
 //
-const doParse = require('../fun/objkey')
+const doParse = require('../fun/cache')
 //
-//this parser is more object specific
-//const doParse = require('../fun/hosts')
-//
-// grab our current session from file
-//const cpSession = require('../playground/session.json')
+// grab our current session from keystore
 const cpLive = require('../fun/session')
-//let cpSession = await cpLive()
 // apply our class method for token auth
 const Cptoken = require('../class/token')
 
-// example runtime for your class method
+// runtime for cache with class method
 //
 
 module.exports = async () => {
 	try {
-		let cpSession = await cpLive()
-		if (!cpSession.uid) {
-			require('../bin/help')
-			return
-		}
+		const cpSession = await cpLive()
+		await console.dir(cpSession)
 		let Myevent = await new Cptoken(cpSession)
 		let mydata = await Myevent.setOff(0, 500, 'full')
 		let myshow = await Myevent.showObjects(cpSession, mydata)
