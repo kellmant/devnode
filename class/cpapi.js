@@ -64,6 +64,11 @@ module.exports = class Cpapi {
 		return this
 	}
 
+	setData (x) {
+		this.data.push(x)
+		return this
+	}
+
 	rmData () {
 		this.data = {}
 		return this
