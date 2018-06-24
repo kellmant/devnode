@@ -29,10 +29,9 @@ module.exports = async (args) => {
 			console.log(args._[1])
 			mykey = args._[1]
 		}
-		let mycnt = 0
 		const myKeystore = new Keystore()
 		await myKeystore.getKey(mykey)
-		let myValue = JSON.parse(await myObj.resVal())
+		let myValue = JSON.parse(await myKeystore.resVal())
 		console.dir(myValue)
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)
