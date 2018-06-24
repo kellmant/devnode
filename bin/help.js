@@ -26,7 +26,7 @@
 		ctrl cache 
 
 		           ..... saves local cache of CP objects
-			   backed up to uid/ in your keystore as 
+			   backed up to uid/<key> in your keystore as 
 			   key=uid, value='json object properties'
 		           This becomes the reference for the object
 			   properties and information, allowing further
@@ -63,12 +63,12 @@
 	object:`
 		ctrl object [command] --[option] <setting>
 
-		 --type       ..... specify type of object to show
-		 --filter     ..... filter expression
+		 --unused     ..... (boolean) search and tag unused objects
+		 --type       ..... specify type of object to tag
+		 --filter     ..... filter expression for your tag search
 		 --tags       ..... add tag value (repeat for as many as needed)
 
 		 [command]             ..... (optional) cpapi commands can be passed to the api
-		 show-unused-objects   ..... find and tag unused objects
 
 		 ex. ctrl object --type host --filter "MyHost" --tags "DMZ Host" --tags "My App"
 
