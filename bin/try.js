@@ -32,7 +32,7 @@ module.exports = async (args) => {
 		const myKeystore = new Keystore()
 		let myValue = await myKeystore.getKey(mykey)
 		//let myValue = JSON.parse(await myKeystore.resVal())
-		Object.keys(myValue.node.nodes).forEach(([value]) => {
+		Object.values(myValue.node.nodes).forEach(([value]) => {
 			console.dir(value)
 		})
 	} catch (err) {
