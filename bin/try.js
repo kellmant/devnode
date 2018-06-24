@@ -18,7 +18,7 @@ const classcall = `../class/${scriptname}`
 const doParse = require('../fun/testobj')
 const Keystore = require('../class/keystore')
 const Cpobject = require('../class/object')
-let mykey = 'tags'
+let mykey = 'obj'
 
 // example runtime for your class method
 //
@@ -35,10 +35,10 @@ module.exports = async (args) => {
 		//console.dir(myValue.result)
 		let myKeylist = Object.keys(myValue.result)
 		myKeylist.forEach(function(value) {
-			console.log('key: ' + value)
+			//console.log('key: ' + value)
 			let myVal = Object.values(myValue.result[value])
 			myVal.forEach(function(kvalue) {
-				console.log('VALUE: ' + kvalue)
+				console.log(value + ' data: ' + kvalue)
 			})
 		})
 	} catch (err) {
@@ -47,7 +47,7 @@ module.exports = async (args) => {
 	} finally {
 		//let runcmd = {'_':['logout']}
 		//require('../bin/logout')(runcmd)
-		console.log('try runtime finally done.')
+		console.log('runtime finally done.')
 	}
 }
 
