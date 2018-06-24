@@ -33,7 +33,7 @@ module.exports = async (args) => {
 		let myValue = await myKeystore.getKey(mykey)
 		//let myValue = JSON.parse(await myKeystore.resVal())
 		Object.keys(myValue.node.nodes).forEach(([value]) => {
-			console.dir(myValue.node.nodes.value)
+			console.dir(value)
 		})
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)
