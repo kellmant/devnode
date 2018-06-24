@@ -55,6 +55,12 @@ module.exports = class Cpapi {
 		if (x.ip) {
 		this.data['ip-only'] = x.ip
 		}
+		if (x.name) {
+			this.data.name = x.name
+		}
+		if (x.uid) {
+			this.data.uid = x.uid
+		}
 		return this
 	}
 

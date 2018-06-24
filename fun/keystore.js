@@ -69,16 +69,16 @@ module.exports.mkdir = function (x) {
 	})
 }
 
-module.exports.uids = function () {
+module.exports.objectify = function (x) {
 		const etcd = new Etcd('http://keystore.toonces:2379')
 		return new Promise(function(resolve, reject) {
-			etcd.get('uid/', { recursive: false }, function (err, res) {
+			etcd.get(x.key, { recursive: true }, function (err, res) {
 			if (err) {
 				reject(err)
 			} else {
-				//const resObj = etcdObjectify(res.node)
+				const resObj = etcdObjectify(res.node)
 				//console.log(typeof resObj)
-				resolve(res.node.nodes)
+				resolve(resObj)
 			}
 		})
 	})

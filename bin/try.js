@@ -13,9 +13,8 @@
 //
 const delay = async () => {
 	const incmd = {'_':['login', 'opb']}
-	const startup = require('../bin/login')(incmd)
-	await console.log(startup)
-	return startup
+	const startup = await require('../bin/login')(incmd)
+	return await startup
 }
 const myoffset = 0
 const pglimit = 500
@@ -103,7 +102,6 @@ module.exports = async (args) => {
 				if (args.tags) {
 				await myNewobj.tag(args.tags)
 				}
-				let tagDump = await myNewobj.dump('tags')
 				let objDump = await myNewobj.dump()
 				let cpTagged = {
 					'key' : 'tag/' + args.filter + '/' + myCached.type + '/' + myCached.uid,

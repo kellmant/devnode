@@ -11,76 +11,122 @@
 // this will show you return values of your args 
 // for runtime
 //
-const doWrite = require('../fun/writefile')
-const doKey = require('../fun/writekey')
-// this parser will backup all found objects to obj/uid
-//
-//const doParse = require('../fun/objkey')
-// this will just dump the key for analysis
-//const doParse = require('../fun/testobj')
+const delay = async () => {
+	const incmd = {'_':['login', 'opb']}
+	const startup = require('../bin/login')(incmd)
+	await console.log(startup)
+	return startup
+}
+const myoffset = 0
+const pglimit = 500
+const details = 'uid'
+const path = require('path');
+const scriptname = path.basename(__filename);
+const classcall = `../class/${scriptname}`
+//const myClass = require(classcall)
 
-const doParse = require('../fun/hosts')
-//const cpSession = require('../playground/session.json')
+const doParse = require('../fun/testobj')
+
 const cpLive = require('../fun/session')
-const Cptoken = require('../class/token')
+const Cpapi = require('../class/cpapi')
+const Keystore = require('../class/keystore')
+const Cpobject = require('../class/object')
+let mycmd = 'show-objects'
 
 // example runtime for your class method
 //
 
 module.exports = async (args) => {
 	try {
+		let newcpdata = {}
+		await delay()
+		if (args._[1]) {
+			console.log(args._[1])
+			mycmd = args._[1]
+		}
 		const cpSession = await cpLive()
+		await console.dir(cpSession)
 		if (!cpSession.uid) {
+			require('../bin/login')
 			console.log('No Active Session, please login')
-			require('../bin/help')
-			return
+		}
+		let Myapi = await new Cpapi(cpSession)
+		await Myapi.print()
+		if (mycmd !== 'show-commands') {
+		await Myapi.setCnt(myoffset, pglimit)
+		await Myapi.setDetail(details)
+		}
+		if (args) {
+		await Myapi.addData(args)
+		}
+		await Myapi.setCmd(mycmd)
+		await Myapi.print()
+		let mycpres = await Myapi.apiPost()
+		let parsedObj = []
+		parsedObj.push(await doParse(mycpres.objects))
+		if (mycpres.total > mycpres.to) {
+			let inoffset = Number(myoffset) + Number(pglimit)
+			while (mycpres.total > inoffset) {
+				await Myapi.setCnt(inoffset, pglimit)
+				mycpres = await Myapi.apiPost()
+				parsedObj.push(await doParse(mycpres.objects))
+				inoffset = Number(inoffset) + Number(pglimit)
+			}
+		}
+		if (mycmd === 'show-unused-objects') {
+			args.filter = 'unused'
+			args.type = 'object'
+			if (!args.tags) {
+				args.tags = 'unused'
+			}
+		}
+		if (!args.filter) {
+			args.filter = 'all'
 		}
 		if (!args.type) {
 			args.type = 'object'
 		}
 
-		let Myevent = await new Cptoken(cpSession)
-		//await doWrite('token', myToken)
-		//await console.dir(cpSession)
-		// run api commands here
-		//
-		await Myevent.print()
-		let mydata = await Myevent.setOff(0, 500, 'standard')
-		let myshow = await Myevent.getMe(cpSession, mydata, args)
-		let mypage = await Myevent.setPage(myshow.data.from, myshow.data.to, myshow.data.total)
-		process.stdout.write(' ' + myshow.data.to + ' of ' + myshow.data.total + ' ')
-		//await console.dir(mydata)
-		//await console.dir(mypage)
-		await doParse(myshow.data)
-		//await console.log('\n')
-		if (mypage.total > mydata.offset) {
-			mydata.offset = Number(mydata.offset) + Number(mydata.limit)
-			while (mypage.total > mydata.offset) {
-				//console.log(`${mypage.total} is more than the ${mypage.to}`)
-				mydata = await Myevent.setOff(mydata.offset, 500, 'standard')
-				myshow = await Myevent.getMe(cpSession, mydata, args)
-				mypage = await Myevent.setPage(myshow.data.from, myshow.data.to, myshow.data.total)
-				process.stdout.write(' ' + myshow.data.to + ' of ' + myshow.data.total + '      ')
-				//await console.dir(myshow.data.objects)
-				await doParse(myshow.data)
-				//await Myevent.print()
-				//console.log(`${mydata.offset} of ${mypage.total} objects indexed`)
-				mydata.offset = Number(mydata.offset) + Number(mydata.limit)
-			}
-			//console.log(`${mydata.offset} of ${mypage.total} objects indexed`)
-		}
-				await console.log('\n')
+		let mycnt = 0
+		var newArray = Array.from(Object.values(parsedObj))
+		for (var i in newArray) {
+			for (var j in newArray[i]) {
+				let myUid = 'uid/' + newArray[i][j]
+				const myObj = new Keystore()
+				await myObj.getKey(myUid)
+				let myCached = JSON.parse(await myObj.resVal())
+				
+				//console.log(' obj/' + args.filter + '/' + newArray[i][j] + ' = ' + args.type)
+				//await console.log(myCached.type)
+				const myNewobj = new Cpobject(myCached)
+				await myNewobj.host(myCached)
+				await myNewobj.network(myCached)
+				//await myNewobj.tag(args.filter)
+				if (args.tags) {
+				await myNewobj.tag(args.tags)
+				}
+				let objDump = await myNewobj.dump()
+				await console.dir(objDump)
+				let cpTagged = {
+					'key' : 'tag/' + myCached.type + '/' + myCached.uid,
+					'value' : JSON.stringify(objDump),
+					'tagkey' : 'obj/set/' + args.filter,
+					'tagvalue' : JSON.stringify(args.tag)
+				}
 
-		//await doWrite('objects', myshow.data.objects)
-		//await console.dir(myshow.data)
-		//
-		//let myclose = await myToken.closeToken(myToken)
-		//await doWrite('session', myclose.data)
-		//await console.dir(myclose.data)
-		//return mypage
+				await myObj.setKey(cpTagged.key, cpTagged.value)
+				mycnt++
+				await myObj.setKey(cpTagged.tagkey, cpTagged.tagvalue)
+			}
+		}
+		console.log(mycnt)
 	} catch (err) {
-		console.log('ERROR IN SESSION event for %j', cpSession)
+		console.log('ERROR IN SESSION event : ' + err.message)
 		console.log(err)
+	} finally {
+		let runcmd = {'_':['logout']}
+		require('../bin/logout')(runcmd)
+		return
 	}
 }
 

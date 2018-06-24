@@ -61,12 +61,16 @@
 		                           `,
 
 	object:`
-		ctrl object --[option] <setting>
+		ctrl object [command] --[option] <setting>
 
 		 --type       ..... specify type of object to show
 		 --filter     ..... filter expression
+		 --tags       ..... add tag value (repeat for as many as needed)
 
-		 ex. ctrl object --type host --filter "MyHost"
+		 [command]             ..... (optional) cpapi commands can be passed to the api
+		 show-unused-objects   ..... find and tag unused objects
+
+		 ex. ctrl object --type host --filter "MyHost" --tags "DMZ Host" --tags "My App"
 
 		                          `,
 

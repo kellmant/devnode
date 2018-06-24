@@ -66,7 +66,7 @@ module.exports = class Keystore {
 	async getKey (x) {
 		this.key = x
 		this.result = await keystore.read(this).catch((err) => { throw new Error(err)})
-		return this
+		return this.result
 	}
 
 	async setKey (x, y) {
@@ -83,8 +83,9 @@ module.exports = class Keystore {
 		return this
 	}
 
-	async getUids () {
-		this.result = await keystore.uids().catch((err) => { throw new Error(err)})
+	async getAll (x) {
+		this.key = x
+		this.result = await keystore.objectify(this).catch((err) => { throw new Error(err)})
 		return this
 	}
 

@@ -28,6 +28,7 @@ module.exports = async (x) => {
 				await doKey(cpRes)
 				}
 			}
+		console.log(mycount)
 		return
 	} catch (err) {
 		throw new Error(err)

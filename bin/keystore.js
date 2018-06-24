@@ -27,7 +27,7 @@ module.exports = async (args) => {
 		await myKeys.print()
 		//await myKeys.showRes()
 		let myvalue = await myKeys.resVal()
-		await return myvalue
+		return await myvalue
 	} catch (err) {
 		console.log(err)
 	}

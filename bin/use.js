@@ -2,7 +2,7 @@
 // Where Used - collect data on where objects are being used
 //
 
-// function for returning object use in policy
+// main runtime
 // recieve and process args from the callout
 // this will show you return values of your args 
 // for runtime
@@ -13,36 +13,46 @@ const delay = async () => {
 	return await startup
 }
 
+const path = require('path');
+const scriptname = path.basename(__filename);
+const classcall = `../class/${scriptname}`
+//const myClass = require(classcall)
+
+//const doParse = require('../fun/testobj')
+
 const cpLive = require('../fun/session')
 const Cpapi = require('../class/cpapi')
 const Keystore = require('../class/keystore')
 const Cpobject = require('../class/object')
-const doWrite = require('../fun/writefile')
 let mycmd = 'where-used'
 
-// runtime for your function, needs x.uid or x.name
-// to search for useage
+// example runtime for your class method
 //
 
-module.exports = async (x) => {
+module.exports = async (args) => {
 	try {
+		let newcpdata = {}
 		await delay()
+		if (args._[1]) {
+			console.log(args._[1])
+			mycmd = args._[1]
+		}
 		const cpSession = await cpLive()
+		await console.dir(cpSession)
 		if (!cpSession.uid) {
 			require('../bin/login')
 			console.log('No Active Session, please login')
-			return
 		}
-
 		let Myapi = await new Cpapi(cpSession)
-		if (x.uid || x.name) {
-		await Myapi.addData(x)
+		await Myapi.print()
+		if (args.uid || args.name) {
+		await Myapi.addData(args)
 		}
 		await Myapi.setCmd(mycmd)
 		await Myapi.print()
 		let mycpuse = await Myapi.apiPost()
 		let cpdiruse = mycpuse['used-directly']
-		await doWrite(mycmd, cpdiruse)
+		await console.log('%j', cpdiruse)
 		return await cpdiruse
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)
