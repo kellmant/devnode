@@ -18,6 +18,8 @@ const classcall = `../class/${scriptname}`
 const doParse = require('../fun/tagit')
 const Keystore = require('../class/keystore')
 const Cpobject = require('../class/object')
+const CpLive = require('../fun/session')
+const Cpapi = require('../class/cpapi')
 let mykey = 'tag'
 // example runtime for your class method
 //
@@ -28,11 +30,14 @@ module.exports = async (args) => {
 		//	console.log(args._[1])
 			mykey = args._[1]
 		}
+		const cpSession = await cpLive()
 		const myRes = await doParse()
-		console.log(myRes[0])
-		console.log(myRes[0].cmd + ' : ' + myRes[0].data)
 		Object.keys(myRes).forEach(key => {
 			console.log(myRes[key].cmd + ' : ' + myRes[key].data)
+			const Myapi = new Cpapi()
+			Myapi.setData(myRes[key].data)
+			Myapi.setCmd(myRes[key].cmd)
+			Myapi.print()
 		})
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)
