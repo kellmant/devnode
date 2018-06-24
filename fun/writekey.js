@@ -1,6 +1,5 @@
 "use strict";
 
-const path = require('path');
 const scriptname = 'keystore'
 const classcall = `../class/${scriptname}`
 const Keystore = require(classcall)

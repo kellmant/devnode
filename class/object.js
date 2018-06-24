@@ -32,6 +32,10 @@ module.exports = class CPObj {
 		return this
 	}
 
+	overwrite (x) {
+		this['set-if-exists'] = 'true'
+	}
+	
 	host (x) {
 		if (x['ipv4-address']) {
 		this['ipv4-address'] = x['ipv4-address']

@@ -34,7 +34,3 @@ module.exports = async (x) => {
 		throw new Error(err)
 	}
 }
-
-
-//Object.entries(obj).forEach(([key, value]) => console.log(`${key}: ${value}`)); 
-

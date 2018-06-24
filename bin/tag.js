@@ -1,11 +1,9 @@
 "use strict";
-// STOP - THIS IS A TEMPLATE
-//
-// copy this to the new filename for your class method
+
 // put a copy of your main runtime with the class in bin/
 // put a copy of the class constructor in class/
 // put a copy of the functions your class needs in fun/
-
+//
 // main runtime
 // recieve and process args from the callout
 // this will show you return values of your args 
