@@ -30,7 +30,7 @@ const cpLive = require('../fun/session')
 const Cpapi = require('../class/cpapi')
 const Keystore = require('../class/keystore')
 const Cpobject = require('../class/object')
-let mycmd = 'show-objects'
+let mycmd = 'show-unused-objects'
 
 // example runtime for your class method
 //
