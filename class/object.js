@@ -9,7 +9,7 @@ module.exports = class CPObj {
 	constructor(x) {
 		//this.uid = x.uid || 'not defined'
 		this.name = x.name || 'no name'
-		this['set-if-exists'] = 'true'
+		//this['set-if-exists'] = 'true'
 		//this.tags = []
 		//this.type = x.type || 'not my type'
 	}
@@ -35,7 +35,7 @@ module.exports = class CPObj {
 	overwrite (x) {
 		this['set-if-exists'] = 'true'
 	}
-	
+
 	host (x) {
 		if (x['ipv4-address']) {
 		this['ipv4-address'] = x['ipv4-address']
