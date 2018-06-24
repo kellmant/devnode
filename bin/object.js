@@ -44,6 +44,10 @@ module.exports = async (args) => {
 			console.log(args._[1])
 			mycmd = args._[1]
 		}
+		if (args.unused) {
+			console.log('showing unused objects')
+			mycmd = 'show-unused-objects'
+		}
 		const cpSession = await cpLive()
 		await console.dir(cpSession)
 		if (!cpSession.uid) {
@@ -108,10 +112,10 @@ module.exports = async (args) => {
 				let objDump = await myNewobj.dump()
 				await console.dir(objDump)
 				let cpTagged = {
-					'key' : 'tag/' + myCached.type + '/' + myCached.uid,
+					'key' : 'tag/' + args.filter + '/set-' + myCached.type + '/' + myCached.uid,
 					'value' : JSON.stringify(objDump),
-					'tagkey' : 'obj/set/' + args.filter,
-					'tagvalue' : JSON.stringify(args.tag)
+					'tagkey' : 'obj/tag/' + args.filter,
+					'tagvalue' : JSON.stringify(args.tags)
 				}
 
 				await myObj.setKey(cpTagged.key, cpTagged.value)
