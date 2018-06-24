@@ -17,6 +17,8 @@ const funcall = `../fun/${scriptname}`
 const doParse = require(funcall)
 const Keystore = require('../class/keystore')
 const Cpobject = require('../class/object')
+const CpLive = require('../fun/session')
+const Cpapi = require('../class/cpapi')
 let mykey = 'obj'
 
 // example runtime for your class method
@@ -27,12 +29,17 @@ module.exports = async (args) => {
 		if (args._[1]) {
 			mykey = args._[1]
 		}
+		const cpSession = await cpLive()
 		let cpRes = await doParse(mykey)
 		console.log(' ')
 		console.log('Add Tags: ' + cpRes.length)
 		//await console.dir(cpRes)
 		Object.keys(cpRes).forEach(key => {
 			console.log(cpRes[key])
+			const Myapi = new Cpapi(cpSession)
+			Myapi.setData(cpRes[key])
+			Myapi.setCmd('add-tag')
+			Myapi.print()
 		})
 		console.log(' ')
 	} catch (err) {
