@@ -30,7 +30,7 @@ const cpLive = require('../fun/session')
 const Cpapi = require('../class/cpapi')
 const Keystore = require('../class/keystore')
 const Cpobject = require('../class/object')
-let mycmd = 'show-unused-objects'
+let mycmd = 'show-objects'
 
 // example runtime for your class method
 //
@@ -70,7 +70,7 @@ module.exports = async (args) => {
 				inoffset = Number(inoffset) + Number(pglimit)
 			}
 		}
-		if (mycmd === 'show-unused-objects') {
+		if (mycmd === 'show-unused-objects' || args.unused) {
 			args.filter = 'unused'
 			args.type = 'object'
 			if (!args.tags) {
@@ -104,13 +104,13 @@ module.exports = async (args) => {
 				}
 				let objDump = await myNewobj.dump()
 				let cpTagged = {
-					'key' : 'tag/' + args.filter + '/set-' + myCached.type + '/' + myCached.uid,
-					'value' : JSON.stringify(objDump),
-					'tagkey' : 'obj/set/' + args.filter,
+					'mkey' : 'tag/' + args.filter + '/set-' + myCached.type + '/' + myCached.uid,
+					'mvalue' : JSON.stringify(objDump),
+					'tagkey' : 'obj/tag/' + args.filter,
 					'tagvalue' : JSON.stringify(args.tags)
 				}
 
-				await myObj.setKey(cpTagged.key, cpTagged.value)
+				await myObj.setKey(cpTagged.mkey, cpTagged.mvalue)
 				mycnt++
 				await myObj.setKey(cpTagged.tagkey, cpTagged.tagvalue)
 			}
