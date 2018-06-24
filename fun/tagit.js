@@ -15,32 +15,30 @@ const path = require('path');
 const scriptname = path.basename(__filename);
 const classcall = `../class/${scriptname}`
 //const myClass = require(classcall)
-const doParse = require('../fun/tagit')
 const Keystore = require('../class/keystore')
-const Cpobject = require('../class/object')
 let mykey = 'tag'
+
 // example runtime for your class method
 //
 
-module.exports = async (args) => {
+module.exports = async () => {
 	try {
-		if (args._[1]) {
-		//	console.log(args._[1])
-			mykey = args._[1]
-		}
-		const myRes = await doParse()
-		console.log(myRes[0])
-		console.log(myRes[0].cmd + ' : ' + myRes[0].data)
-		Object.keys(myRes).forEach(key => {
-			console.log(myRes[key].cmd + ' : ' + myRes[key].data)
-		})
+		let mytagged = []
+		const myKeystore = new Keystore()
+		let myValue = await myKeystore.getAll(mykey)
+		console.log('my key directory is : ' + myValue.key)
+		Object.entries(myValue.result).forEach(([key, value]) => 
+			Object.entries(value).forEach(([vkey, vvalue]) => 
+				Object.values(vvalue).forEach((dvalue) => 
+					mytagged.push({ 'cmd' : vkey, 'data' : dvalue }))))
+		return mytagged
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)
 		console.log(err)
 	} finally {
 		//let runcmd = {'_':['logout']}
 		//require('../bin/logout')(runcmd)
-		console.log(scriptname + ' runtime finally done.')
+		console.log(scriptname + ' function finally done.')
 	}
 }
 
