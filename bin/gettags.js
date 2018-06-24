@@ -29,8 +29,11 @@ module.exports = async (args) => {
 		}
 		let cpRes = await doParse(mykey)
 		console.log(' ')
-		console.log('Add Tags: ')
-		await console.dir(cpRes)
+		console.log('Add Tags: ' + cpRes.length)
+		//await console.dir(cpRes)
+		Object.keys(cpRes).forEach(key => {
+			console.log(cpRes[key])
+		})
 		console.log(' ')
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)
