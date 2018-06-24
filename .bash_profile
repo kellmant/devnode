@@ -386,6 +386,7 @@ alias add='git add'
 alias mods='git diff'
 alias commit='git commit -m'
 alias push='git push origin master'
+alias pull='git pull'
 alias githelp='echo ; echo -e "${BWhite} add${NC} (add file for commit) | ${BWhite} mods${NC} (show changes) | ${BWhite}commit${NC} (commit changes) | ${BWhite}push ${NC}(update repo)" ; echo'
 
 alias gitname='git config --global user.name'
