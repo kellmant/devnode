@@ -13,9 +13,8 @@
 //
 const path = require('path');
 const scriptname = path.basename(__filename);
-const classcall = `../class/${scriptname}`
-//const myClass = require(classcall)
-const doParse = require('../fun/gettags')
+const funcall = `../fun/${scriptname}`
+const doParse = require(funcall)
 const Keystore = require('../class/keystore')
 const Cpobject = require('../class/object')
 let mykey = 'obj'
@@ -26,7 +25,6 @@ let mykey = 'obj'
 module.exports = async (args) => {
 	try {
 		if (args._[1]) {
-		//	console.log(args._[1])
 			mykey = args._[1]
 		}
 		let cpRes = await doParse(mykey)
@@ -34,18 +32,6 @@ module.exports = async (args) => {
 		console.log('Add Tags: ')
 		await console.dir(cpRes)
 		console.log(' ')
-		//const myKeystore = new Keystore()
-		//let myValue = await myKeystore.getAll(mykey)
-		//console.log('my key directory is : ' + myValue.key)
-		//console.dir(myValue.result)
-		//let myKeylist = Object.keys(myValue.result)
-		//myKeylist.forEach(function(value) {
-			//console.log('key: ' + value)
-			//let myVal = Object.values(myValue.result[value])
-			//myVal.forEach(function(kvalue) {
-			//	console.log(value + ' data: ' + kvalue)
-			//})
-		//})
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)
 		console.log(err)

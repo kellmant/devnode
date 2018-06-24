@@ -15,44 +15,31 @@ const path = require('path');
 const scriptname = path.basename(__filename);
 const classcall = `../class/${scriptname}`
 //const myClass = require(classcall)
-const doParse = require('../fun/gettags')
+const doParse = require('../fun/testobj')
 const Keystore = require('../class/keystore')
 const Cpobject = require('../class/object')
-let mykey = 'obj'
+//let mykey = 'obj'
 
 // example runtime for your class method
 //
 
-module.exports = async (args) => {
+module.exports = async (x) => {
 	try {
-		if (args._[1]) {
-		//	console.log(args._[1])
-			mykey = args._[1]
-		}
-		let cpRes = await doParse(mykey)
-		console.log(' ')
-		console.log('Add Tags: ')
-		await console.dir(cpRes)
-		console.log(' ')
-		//const myKeystore = new Keystore()
-		//let myValue = await myKeystore.getAll(mykey)
-		//console.log('my key directory is : ' + myValue.key)
-		//console.dir(myValue.result)
-		//let myKeylist = Object.keys(myValue.result)
-		//myKeylist.forEach(function(value) {
-			//console.log('key: ' + value)
-			//let myVal = Object.values(myValue.result[value])
-			//myVal.forEach(function(kvalue) {
-			//	console.log(value + ' data: ' + kvalue)
-			//})
-		//})
+		const myKeystore = new Keystore()
+		let myValue = await myKeystore.getAll(x)
+		console.log('my key directory is : ' + myValue.key)
+		let myKeylist = Object.keys(myValue.result)
+		myKeylist.forEach(function(value) {
+			console.log('key: ' + value)
+		})
+		return myKeylist
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)
 		console.log(err)
 	} finally {
 		//let runcmd = {'_':['logout']}
 		//require('../bin/logout')(runcmd)
-		console.log(scriptname + ' runtime finally done.')
+		console.log(scriptname + ' function finally done.')
 	}
 }
 
