@@ -26,14 +26,20 @@ let mykey = 'tags'
 module.exports = async (args) => {
 	try {
 		if (args._[1]) {
-			console.log(args._[1])
+		//	console.log(args._[1])
 			mykey = args._[1]
 		}
 		const myKeystore = new Keystore()
-		let myValue = await myKeystore.getKey(mykey)
-		//let myValue = JSON.parse(await myKeystore.resVal())
-		Object.keys(myValue.node.nodes).forEach(([key, value]) => {
-			console.dir(key)
+		let myValue = await myKeystore.getAll(mykey)
+		console.log('my key directory is : ' + myValue.key)
+		//console.dir(myValue.result)
+		let myKeylist = Object.keys(myValue.result)
+		myKeylist.forEach(function(value) {
+			console.log('key: ' + value)
+			let myVal = Object.values(myValue.result[value])
+			myVal.forEach(function(kvalue) {
+				console.log('VALUE: ' + kvalue)
+			})
 		})
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)
