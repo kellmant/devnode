@@ -32,7 +32,7 @@ module.exports = async (args) => {
 		const myKeystore = new Keystore()
 		let myValue = await myKeystore.getKey(mykey)
 		//let myValue = JSON.parse(await myKeystore.resVal())
-		console.dir(myValue)
+		console.dir(myValue.node)
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)
 		console.log(err)
