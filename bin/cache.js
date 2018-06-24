@@ -48,6 +48,8 @@ module.exports = async () => {
 	} catch (err) {
 		console.log('ERROR IN SESSION event for %j', cpSession)
 		console.log(err)
+	} finally {
+		console.log('finally done')
 	}
 }
 
