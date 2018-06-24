@@ -20,6 +20,7 @@ const Cpobject = require('../class/object')
 const CpLive = require('../fun/session')
 const Cpapi = require('../class/cpapi')
 let mykey = 'obj'
+const cpSession = cpLive()
 
 // example runtime for your class method
 //
@@ -29,10 +30,10 @@ module.exports = async (args) => {
 		if (args._[1]) {
 			mykey = args._[1]
 		}
-		const cpSession = await cpLive()
+		await console.dir(cpSession)
 		let cpRes = await doParse(mykey)
 		console.log(' ')
-		console.log('Add Tags: ' + cpRes.length)
+		console.log('Tags to set : ' + cpRes.length)
 		//await console.dir(cpRes)
 		Object.keys(cpRes).forEach(key => {
 			console.log(cpRes[key])
@@ -41,14 +42,16 @@ module.exports = async (args) => {
 			Myapi.setCmd('add-tag')
 			Myapi.print()
 		})
-		console.log(' ')
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)
 		console.log(err)
 	} finally {
 		//let runcmd = {'_':['logout']}
 		//require('../bin/logout')(runcmd)
-		console.log(scriptname + ' runtime finally done.')
+		const Myclose = new Cpapi(cpSession)
+		Myclose.setCmd('publish')
+		Myclose.print()
+		console.log(scriptname + ' finally DONE')
 	}
 }
 
