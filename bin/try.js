@@ -104,7 +104,7 @@ module.exports = async (args) => {
 				}
 				let objDump = await myNewobj.dump()
 				let cpTagged = {
-					'key' : 'tag/' + args.filter + '/' + myCached.type + '/' + myCached.uid,
+					'key' : 'tag/' + args.filter + '/set-' + myCached.type + '/' + myCached.uid,
 					'value' : JSON.stringify(objDump),
 					'tagkey' : 'obj/set/' + args.filter,
 					'tagvalue' : JSON.stringify(args.tags)
