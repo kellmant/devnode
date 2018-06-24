@@ -43,6 +43,10 @@ module.exports = async (args) => {
 			console.log(args._[1])
 			mycmd = args._[1]
 		}
+		if (args.unused) {
+			console.log('showing unused objects')
+			mycmd = 'show-unused-objects'
+		}
 		const cpSession = await cpLive()
 		await console.dir(cpSession)
 		if (!cpSession.uid) {
@@ -70,7 +74,7 @@ module.exports = async (args) => {
 				inoffset = Number(inoffset) + Number(pglimit)
 			}
 		}
-		if (mycmd === 'show-unused-objects' || args.unused) {
+		if (mycmd === 'show-unused-objects') {
 			args.filter = 'unused'
 			args.type = 'object'
 			if (!args.tags) {
