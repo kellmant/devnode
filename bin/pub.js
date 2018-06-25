@@ -26,34 +26,15 @@ let mykey = 'tag'
 
 module.exports = async (args) => {
 	try {
-		if (args._[1]) {
-		//	console.log(args._[1])
-			mykey = args._[1]
-		}
-		//let myData = {}
 		const cpSession = await CpLive()
-		const myRes = await doParse()
-		Object.keys(myRes).forEach(key => {
-			let myData = JSON.parse(myRes[key].data)
-			//console.dir(myData.tags)
-			const Myapi = new Cpapi(cpSession)
-			Myapi.setData(myData)
-			Myapi.setCmd(myRes[key].cmd)
-			Myapi.print()
-			Myapi.apiPost().then((res) => { console.log(res)})
-		})
+		const Myclose = new Cpapi(cpSession)
+		Myclose.setCmd('publish')
+		Myclose.print()
+		console.log(await Myclose.apiPost())
+		//await Myclose.print()
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)
-		//console.log(err)
-	} finally {
-		//let runcmd = {'_':['logout']}
-		//require('../bin/logout')(runcmd)
-		//const cpSession = await CpLive()
-		//const Myclose = new Cpapi(cpSession)
-		//Myclose.setCmd('publish')
-		//Myclose.print()
-		//await Myclose.apiPost()
-		console.log(scriptname + ' runtime finally done.')
+		console.log(err)
 	}
 }
 

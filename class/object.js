@@ -9,7 +9,7 @@ module.exports = class CPObj {
 	constructor(x) {
 		//this.uid = x.uid || 'not defined'
 		this.name = x.name || 'no name'
-		//this['set-if-exists'] = 'true'
+		this['set-if-exists'] = 'true'
 		//this.tags = []
 		//this.type = x.type || 'not my type'
 	}
@@ -24,7 +24,7 @@ module.exports = class CPObj {
 
 	tag (x) {
 		if (!this.tags) {
-			this.tags = x
+			this.tags = [x]
 		} else {
 		this.tags.push(x)
 		//this.tags =+ x
@@ -32,7 +32,7 @@ module.exports = class CPObj {
 		return this
 	}
 
-	overwrite (x) {
+	overwrite () {
 		this['set-if-exists'] = 'true'
 	}
 
@@ -63,12 +63,12 @@ module.exports = class CPObj {
 	}
 
 	group (x) {
-		//const mymembers = {}
-	//	for (var i in x) {
-	//	const myGroups = Object.keys(x).reduce((p, c) => ({...p, [c]: x[c]}), {})
-			//mymembers.push(x)
-//		}
-		//this.members = x.members
+		const mymembers = {}
+		for (var i in x) {
+		const myGroups = Object.keys(x).reduce((p, c) => ({...p, [c]: x[c]}), {})
+			mymembers.push(x)
+		}
+		this.members = x.members
 		return this
 	}
 

@@ -61,11 +61,14 @@ module.exports = class Cpapi {
 		if (x.uid) {
 			this.data.uid = x.uid
 		}
+		if (x.uid) {
+			this.data.uid = x.uid
+		}
 		return this
 	}
 
 	setData (x) {
-		this.data.push(x)
+		this.data = x
 		return this
 	}
 
