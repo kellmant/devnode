@@ -20,7 +20,7 @@ module.exports = class Keystore {
 	}
 
 	print () {
-		console.log(Object.getOwnPropertyNames(this.result.node.nodes))
+		console.log(Object.getOwnPropertyNames(this))
 		console.log('\n')
 	}
 
@@ -66,7 +66,11 @@ module.exports = class Keystore {
 	async getKey (x) {
 		this.key = x
 		this.result = await keystore.read(this).catch((err) => { throw new Error(err)})
-		return this.result
+		if (!this.result.node.nodes) {
+			return this.result.node.value
+		} else {
+		return this.result.node.nodes
+		}
 	}
 
 	async setKey (x, y) {

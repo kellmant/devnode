@@ -35,7 +35,7 @@ module.exports = async (args) => {
 		const myRes = await doParse()
 		Object.keys(myRes).forEach(key => {
 			let myData = JSON.parse(myRes[key].data)
-			//console.dir(myData.tags)
+			console.dir(myData.tags)
 			const Myapi = new Cpapi(cpSession)
 			Myapi.setData(myData)
 			Myapi.setCmd(myRes[key].cmd)

@@ -105,17 +105,17 @@ module.exports = async (args) => {
 				const myNewobj = new Cpobject(myCached)
 				await myNewobj.host(myCached)
 				await myNewobj.network(myCached)
-				//await myNewobj.tag(args.filter)
+				await myNewobj.tag(args.filter)
 				//if (args.tags) {
 				//await myNewobj.tag(args.tags)
 				//}
 				let objDump = await myNewobj.dump()
 				await console.dir(objDump)
 				let cpTagged = {
-					'key' : 'tag/' + args.filter + '/add-' + myCached.type + '/' + myCached.uid,
+					'key' : 'tag/' + args.filter + '/set-' + myCached.type + '/' + myCached.uid,
 					'value' : JSON.stringify(objDump),
 					'tagkey' : 'obj/add-tag/' + args.filter,
-					'tagvalue' : args.tags
+					'tagvalue' : args.filter
 				}
 
 				await myObj.setKey(cpTagged.key, cpTagged.value)

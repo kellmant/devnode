@@ -50,7 +50,7 @@ module.exports = async (args) => {
 			Myapi.setData(cpRes[key])
 			Myapi.setCmd('add-tag')
 			Myapi.print()
-			Myapi.apiPost()
+		//	Myapi.apiPost()
 		})
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)

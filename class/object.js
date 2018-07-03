@@ -9,7 +9,7 @@ module.exports = class CPObj {
 	constructor(x) {
 		//this.uid = x.uid || 'not defined'
 		this.name = x.name || 'no name'
-		this['set-if-exists'] = 'true'
+		//this['set-if-exists'] = 'true'
 		//this.tags = []
 		//this.type = x.type || 'not my type'
 	}
@@ -24,10 +24,10 @@ module.exports = class CPObj {
 
 	tag (x) {
 		if (!this.tags) {
-			this.tags = [x]
+			this.tags = {'add': x}
 		} else {
-		this.tags.push(x)
-		//this.tags =+ x
+		//this.tags.push(x)
+		this.tags += {x}
 		}
 		return this
 	}

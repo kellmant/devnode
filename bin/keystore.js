@@ -23,11 +23,8 @@ module.exports = async (args) => {
 			myKeys.setOpt(args)
 		}
 		myKeys.print()
-		await myKeys.getKey(args.key)
-		await myKeys.print()
-		//await myKeys.showRes()
-		let myvalue = await myKeys.resVal()
-		return await myvalue
+		console.log(JSON.stringify(await myKeys.getKey(args.key), null, 2))
+		//return await myvalue
 	} catch (err) {
 		console.log(err)
 	}

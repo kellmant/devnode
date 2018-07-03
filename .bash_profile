@@ -394,6 +394,7 @@ alias gitmail='git config --global user.email'
 alias gitpass='git config --global credential.helper store'
 alias cleanscreen='reset ; resize'
 alias setme='sed -i \"s/BUDDY/${BUDDY}/g\" ${1}'
+alias tag='skey tag'
 
 reset
 resize
