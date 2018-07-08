@@ -1,5 +1,6 @@
 
-const doKey = require('../fun/writekey')
+const Redis = require('redis-utils-json');
+
 // this function takes in the raw check point object, and indexes it as a full object
 // without using a class. Rather then load a full method, you just want the details
 // we index all objects in a keystore cache of obj/uid/myObj.type/myObj.uid
@@ -15,21 +16,20 @@ const doKey = require('../fun/writekey')
 
 module.exports = async (x) => {
 	try {
-		let mycount = 0
-		var cpRes = {}
-		const cpCheck = {}
-		for (var i in x) {
-			for (var j in x[i]) {
-				const myObj = Object.keys(x[i][j]).reduce((p, c) => ({...p, [c]: x[i][j][c]}), {})
-				cpCheck.uid = await myObj.uid
-					mycount++
-				cpRes.key = 'uid/' + myObj.uid 
-				cpRes.value = JSON.stringify(myObj)
-				await doKey(cpRes)
-				}
+		const client = new Redis('redis://redis:6379')
+		return new Promise(function(resolve, reject) {
+			let mydata = JSON.stringify(x)
+			client.setKey('type:' + x.type, x, function (err, res) {
+			if (err) {
+				reject(err)
+			} else {
+				process.stdout.write('+')
+				resolve(res)
 			}
-		console.log(mycount)
-		return
+		})
+		client.quit(function () {	})
+	})
+
 	} catch (err) {
 		throw new Error(err)
 	}

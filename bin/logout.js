@@ -18,6 +18,7 @@ const classcall = `../class/${scriptname}`
 //const doAuth = require('../bin/auth')
 const doWrite = require('../fun/writefile')
 const doKey = require('../fun/writekey')
+const doRedis = require('../fun/redis')
 const Cptoken = require('../class/token')
 //const cpSession = require('../playground/session.json')
 const Keysession = require('../class/keystore')
@@ -37,7 +38,7 @@ module.exports = async () => {
 			console.log('Session logout message recieved')
 			require('../bin/help')(myhelp)
 			return
-		}
+		} else {
 		//await cpKeys.setOpt(cpSession)
 		const endToken = await new Cptoken(cpSession)
 		//
@@ -45,7 +46,10 @@ module.exports = async () => {
 		myclose.key = 'api/session'
 		myclose.value = JSON.stringify(myclose.data)
 		await doKey(myclose)
+		await doRedis.expire('session', myclose.data, 20)
+		//await doRedis.expire('session', 20)
 		await console.dir(myclose.data)
+		}
 	} catch (err) {
 		console.log('ERROR IN SESSION LOGOUT ' + err.message)
 		console.log('session token in api key expired?')

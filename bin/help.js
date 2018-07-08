@@ -9,12 +9,14 @@
 	     login    ... login to <CPapiHost>
 	     logout   ... end current session login
 
-	     cache    ... capture all uid as json object to keystore
+	     cache    ... capture all uid as json object to etcd keystore
+	     rcache   ... capture all uid as json object to Redis keystore
+	     redis    ... Redis keystore hashed key value listing
 	     object   ... show objects on cpapi store
 	     try      ... example api call for check point objects
 	
 	     keystore ... etcd class method for key management
-	     setkey   ... set key value in keystore
+	     setkey   ... set key value in etcd keystore
 
 	     version  ... show controller version
 
@@ -35,6 +37,29 @@
 			   as leverage local processing to update objects.
 
 		                          `,
+	
+	rcache:`
+		ctrl rcache 
+
+		           ..... saves local cache of CP objects
+			   backed up to <type>/<uid> in your REDIS keystore as 
+			   hash=type, key=uid, value='json object properties'
+		           This becomes the reference for the object
+			   properties and information, allowing further
+			   REST req to the CP api server to be liited to UID.
+			   This will reduce load on the smartcenter, as well
+			   as leverage local processing to update objects.
+
+		                          `,
+	redis:`
+		ctrl redis <hash field> [--flush]
+
+		 ctrl redis          ..... summary of hash fields
+		 ctrl redis ls       ..... list all root hash keys
+		 ctrl redis <key>    ..... display key values in hash
+		 ctrl redis --flush  ..... clear all hash keys in Redis db
+		                          `,
+
 	keystore:`
 		ctrl keystore --[option] <setting>
 

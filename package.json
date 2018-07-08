@@ -27,6 +27,9 @@
     "axios": "^0.18.0",
     "etcd-result-objectify": "^1.0.0",
     "minimist": "^1.2.0",
-    "node-etcd": "^5.1.0"
+    "node-etcd": "^5.1.0",
+    "redis": "^2.8.0",
+    "redis-jsonify": "^1.2.0",
+    "redis-utils-json": "^1.0.0"
   }
 }

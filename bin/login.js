@@ -18,6 +18,7 @@ const classcall = `../class/${scriptname}`
 const doAuth = require('../bin/auth')
 const doWrite = require('../fun/writefile')
 const doKey = require('../fun/writekey')
+const doRedis = require('../fun/redis')
 const Cptoken = require('../class/token')
 //const CpSession = require('../playground/session.json')
 
@@ -38,6 +39,7 @@ module.exports = async (args) => {
 		myKey.value = await JSON.stringify(myToken)
 		myKey.ttl = await myToken.ttl
 		await doKey(myKey)
+		await doRedis.expire('session', myAuth, myAuth['session-timeout'])
 		await console.dir(myToken.uid)
 		// run api commands here
 		//
