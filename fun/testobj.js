@@ -3,9 +3,11 @@
 module.exports = async (x) => {
 	try {
 		var cpRes = []
-		//Object.entries(x).forEach(([key, value]) => console.log(`obj/${key}: ${value}`)); 
-		Object.entries(x).forEach(([key, value]) => cpRes.push(value))
-		return cpRes
+		if (x.hasOwnProperty('objects')) {
+			console.log(' has objects property to index')
+			Object.entries(x.objects).forEach(([key, value]) => cpRes.push(value))
+			return cpRes
+			}
 	} catch (err) {
 		console.error(err)
 	}

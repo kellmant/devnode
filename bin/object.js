@@ -17,6 +17,7 @@ const delay = async () => {
 	await console.log(startup)
 	return startup
 }
+const noffcmds = [ "show-last-publihed-session", "show-changes", "show-validations", "show-api-versions", "show-commands", "show-api-settings" ]
 const myoffset = 0
 const pglimit = 500
 const details = 'uid'
@@ -56,7 +57,7 @@ module.exports = async (args) => {
 		}
 		let Myapi = await new Cpapi(cpSession)
 		await Myapi.print()
-		if (mycmd !== 'show-commands') {
+		if (!mycmd in noffcmds) {
 		await Myapi.setCnt(myoffset, pglimit)
 		await Myapi.setDetail(details)
 		}

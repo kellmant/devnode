@@ -15,20 +15,19 @@ const delay = async () => {
 	const incmd = {'_':['login', 'opb']}
 	const startup = require('../bin/login')(incmd)
 	await console.log(startup)
-	return startup
+	return await startup
 }
 const myoffset = 0
 const pglimit = 500
-const details = 'uid'
+const details = 'full'
 const path = require('path');
-const scriptname = path.basename(__filename);
-const classcall = `../class/${scriptname}`
-//const myClass = require(classcall)
 
 const doParse = require('../fun/testobj')
-const getUid = require('../fun/reduid')
-const redis = require('redis')
-const jsonify = require('redis-jsonify')
+const doClean = require('../fun/rjcache')
+//const getUid = require('../fun/reduid')
+//const redis = require('redis')
+//const jsonify = require('redis-jsonify')
+const Rejson = require('../fun/rejson')
 
 const cpLive = require('../fun/session')
 const Cpapi = require('../class/cpapi')
@@ -56,6 +55,7 @@ module.exports = async (args) => {
 		if (!cpSession.uid) {
 			require('../bin/login')
 			console.log('No Active Session, please login')
+			return
 		}
 		let Myapi = await new Cpapi(cpSession)
 		await Myapi.print()
@@ -70,13 +70,13 @@ module.exports = async (args) => {
 		await Myapi.print()
 		let mycpres = await Myapi.apiPost()
 		let parsedObj = []
-		parsedObj.push(await doParse(mycpres.objects))
+		parsedObj.push(await doParse(mycpres))
 		if (mycpres.total > mycpres.to) {
 			let inoffset = Number(myoffset) + Number(pglimit)
 			while (mycpres.total > inoffset) {
 				await Myapi.setCnt(inoffset, pglimit)
 				mycpres = await Myapi.apiPost()
-				parsedObj.push(await doParse(mycpres.objects))
+				parsedObj.push(await doParse(mycpres))
 				inoffset = Number(inoffset) + Number(pglimit)
 			}
 		}
@@ -93,63 +93,34 @@ module.exports = async (args) => {
 		if (!args.type) {
 			args.type = 'object'
 		}
-
-		const rclient = jsonify(redis.createClient('redis://redis:6379'))
-		let mycnt = 0
-		var myOid = {}
-		var myHash = {}
-		var myreturn = {}
-		var newArray = Array.from(Object.values(parsedObj))
-		for (var i in newArray) {
-			for (var j in newArray[i]) {
-				myOid = newArray[i][j]
-				if (args.hash) {
-				myHash = args.hash
+	Rejson.rootkey(args).then((myio) => {
+		return myio
+	})
+		var mycount = 0
+		for (var i in parsedObj) {
+			for (var j in parsedObj[i]) {
+				let myObj = Object.keys(parsedObj[i][j]).reduce((p, c) => ({...p, [c]: parsedObj[i][j][c]}), {})
+				if (!myObj) {
+					continue
 				} else {
-				myHash = args.filter
+				mycount++
+				Rejson.filter(args.filter, '_' + mycount, myObj).then((myfil) => {
+					return myfil
+					})
 				}
-				//console.log(myHash + ' : ' + myOid)
-				myreturn = await rclient.hget('uid', myOid, function (err, reply) {
-					console.log(typeof reply)
-					console.log(reply)
-					return reply
-			})
-				await console.dir(myreturn)
-				await rclient.quit()
-				//const myObj = new Keystore()
-				//await myObj.getKey(myUid)
-				//let myCached = JSON.parse(await myObj.resVal())
-				
-				//console.log(' obj/' + args.filter + '/' + newArray[i][j] + ' = ' + args.type)
-				//await console.log(myCached.type)
-				//const myNewobj = new Cpobject(myCached)
-				//await myNewobj.host(myCached)
-				//await myNewobj.network(myCached)
-				//await myNewobj.tag(args.filter)
-				//if (args.tags) {
-				//await myNewobj.tag(args.tags)
-				//}
-				//let objDump = await myNewobj.dump()
-				//await console.dir(objDump)
-				//let cpTagged = {
-				//	'key' : 'tag/' + args.filter + '/set-' + myCached.type + '/' + myCached.uid,
-				//	'value' : JSON.stringify(objDump),
-				//	'tagkey' : 'obj/add-tag/' + args.filter,
-				//	'tagvalue' : args.filter
-				//}
-
-				//await myObj.setKey(cpTagged.key, cpTagged.value)
-				mycnt++
-				//await myObj.setKey(cpTagged.tagkey, cpTagged.tagvalue)
+			//console.log(j + ' Middle block count: ' + mycount)
 			}
+		console.log(i + ' Outer block FINAL count: ' + mycount)
 		}
-		console.log(mycnt)
+		Rejson.close()
+		return
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)
-		console.log(err)
+		console.log(args)
 	} finally {
 		let runcmd = {'_':['logout']}
 		require('../bin/logout')(runcmd)
+		//require('../bin/logout')
 		return
 	}
 }

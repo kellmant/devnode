@@ -1,9 +1,9 @@
 const redis = require('redis')
 const jsonify = require('redis-jsonify')
 
+const client = jsonify(redis.createClient('redis://redis:6379'))
 
 module.exports.get = function (k) {
-		const client = jsonify(redis.createClient('redis://redis:6379'))
 		return new Promise(function(resolve, reject) {
 			client.get(k, function (err, res) {
 			if (err) {
@@ -17,21 +17,20 @@ module.exports.get = function (k) {
 }
 
 module.exports.all = async (k) => {
-		const client = jsonify(redis.createClient('redis://redis:6379'))
+		const rclient = redis.createClient('redis://redis:6379')
 		return new Promise(function(resolve, reject) {
-			client.keys(k, function (err, res) {
+			rclient.keys(k, function (err, res) {
 			if (err) {
 				reject(err)
 			} else {
 				resolve(res)
 			}
 		})
-		client.quit(function () {	})
+			rclient.quit()
 	})
 }
 
 module.exports.set = async (k, v) => {
-		const client = jsonify(redis.createClient('redis://redis:6379'))
 		return new Promise(function(resolve, reject) {
 			client.set(k, v, function (err, res) {
 			if (err) {
@@ -46,7 +45,6 @@ module.exports.set = async (k, v) => {
 }
 
 module.exports.hset = async (h, k, v) => {
-		const client = jsonify(redis.createClient('redis://redis:6379'))
 		return new Promise(function(resolve, reject) {
 			client.hset(h, k, v, function (err, res) {
 			if (err) {
@@ -61,7 +59,6 @@ module.exports.hset = async (h, k, v) => {
 }
 
 module.exports.hget = async (f, k) => {
-		const client = jsonify(redis.createClient('redis://redis:6379'))
 		return new Promise(function(resolve, reject) {
 			client.hget(f, k, function (err, res) {
 			if (err) {
@@ -75,7 +72,6 @@ module.exports.hget = async (f, k) => {
 }
 
 module.exports.hkeys = async (h) => {
-		const client = jsonify(redis.createClient('redis://redis:6379'))
 		return new Promise(function(resolve, reject) {
 			client.hkeys(h, function (err, res) {
 			if (err) {
@@ -89,21 +85,20 @@ module.exports.hkeys = async (h) => {
 }
 
 module.exports.hlen = async (h) => {
-		const client = redis.createClient('redis://redis:6379')
+		const rclient = redis.createClient('redis://redis:6379')
 		return new Promise(function(resolve, reject) {
-			client.hlen(h, function (err, res) {
+			rclient.hlen(h, function (err, res) {
 			if (err) {
 				reject(err)
 			} else {
 				resolve(res)
 			}
 		})
-		client.quit(function () {	})
+		rclient.quit(function () {	})
 	})
 }
 
 module.exports.expire = async (k, v, exp) => {
-		const client = jsonify(redis.createClient('redis://redis:6379'))
 		return new Promise(function(resolve, reject) {
 			client.setex(k, exp, v, function (err, res) {
 			if (err) {
@@ -114,6 +109,18 @@ module.exports.expire = async (k, v, exp) => {
 			}
 		})
 		client.quit(function () {	})
+	})
+}
+
+module.exports.close = async () => {
+		return new Promise(function(resolve, reject) {
+			client.quit(function (err, res) {
+			if (err) {
+				reject(err)
+			} else {
+				resolve(res)
+			}
+		})
 	})
 }
 

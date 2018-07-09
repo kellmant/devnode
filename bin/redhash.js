@@ -3,30 +3,27 @@
 const path = require('path');
 const scriptname = path.basename(__filename);
 const classcall = `../class/${scriptname}`
-const Keystore = require('../fun/redis')
+const Rejson = require('../fun/rejson')
 
 
 module.exports = async (args) => {
 	try {
-		let myvalue = {}
+		var myvalue = {}
 		let mylength = 0
-		console.log('RUNTIME passed args : %j', args)
-		if ((!args.hash) && (!args.key)) {
-			args.hash = '*'
-			myvalue = await Keystore.all(args.hash)
+		if (args._[2]) {
+			myvalue = await Rejson.mykey(args._[1], args._[2])
 		} else {
-			if (!args.key) {
-			myvalue = await Keystore.hkeys(args.hash)
-			mylength = await Keystore.hlen(args.hash)
+			if (args._[1]) {
+			myvalue = await Rejson.myobj(args._[1])
 			} else {
-			myvalue = await Keystore.hget(args.hash, args.key)
+		//	myvalue = 'nothing to scan'
+			return
 			}
 		}
 		await console.log(typeof myvalue)
 		await console.log('Keys: ')
 		await console.dir(myvalue)
-		await console.log('Length: ' + mylength)
-		await console.log('Name: ' + myvalue.name)
+		return await myvalue
 	} catch (err) {
 		console.log(err)
 	}

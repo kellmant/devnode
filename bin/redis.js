@@ -3,15 +3,15 @@
 const path = require('path');
 const scriptname = path.basename(__filename);
 const classcall = `../class/${scriptname}`
-const Keystore = require('../fun/redis')
+//const Keystore = require('../fun/redis')
 const redis = require('redis')
-const jsonify = require('redis-jsonify')
+//const jsonify = require('redis-jsonify')
+const Rejson = require('../fun/rejson')
 
 
 
 module.exports = async (args) => {
 	try {
-		const rclient = jsonify(redis.createClient('redis://redis:6379'))
 		let myvalue = {}
 		var mylength = 0
 		console.log('RUNTIME passed args : %j', args)
@@ -19,53 +19,42 @@ module.exports = async (args) => {
 			const client = redis.createClient('redis://redis:6379')
 			await client.flushdb()
 			await client.quit()
+			//return
 		}
-		if ((args.key) && (args._[1])) {
-			await rclient.hget(args._[1], args.key, function (err, reply) {
-					console.dir(reply)
-					console.log(reply.name)
-					console.log(reply.type)
-					console.log(reply.uid)
-					console.log(typeof reply)
-			})
-			await rclient.quit()
-			return reply
+		if ((args._[1]) && (args.index)) {
+			mylength = await Rejson.count(args._[1])
+			for (var i = 1; i < mylength; i++) {
+				let myout = await Rejson.mykey(args._[1], '_' + i + '.' + args.index)
+				console.dir(await i + ' ' + args.index + ' => ' +  myout)
+				//console.dir(await myout)
+				}
+				console.log(await args._[0] + ' ' + args._[1])
+			args._[1] = 'ls'
 		}
-		if (args._[1] === 'ls') {
+		if ((args._[1]) && (args.schema)) {
+			let myout = await Rejson.myobj(args._[1], '_1')
+			console.log(await myout)
+			args._[1] = 'ls'
+		}
+		if ((args._[2]) && (args._[1])) {
+			myvalue = await Rejson.mykey(args._[1], args._[2])
+			console.log(await myvalue)
+			return await myvalue
+		}
+		if ((args._[1] === 'ls') || (!args._[1])) {
 			let myhelp = { '_' : ['rls'] }	
 			let myout = await require('../bin/rls')(myhelp)
-			args._[1] = 'ROOT hash of key'
+			console.log(await myout)
+			args._[1] = 'ls'
+			//await rclient.quit()
 			}
-		if (!args._[1]) {
-			args.hash = '*'
-			rclient.keys(args.hash, function (err, replies) {
-				replies.forEach(function (reply, j) {
-					rclient.hvals(reply, function (err, objreplies) {
-						objreplies.forEach(function (objreply, i) {
-							mylength++
-						})
-					process.stdout.write(reply)
-					process.stdout.write('   ' + objreplies.length + ' keys')
-					console.log('  of ' + mylength + ' objects indexed')
-					})
-				})
-				rclient.quit()
-			})
-
-			} else {
-			rclient.hvals(args._[1], function (err, replies) {
-			//console.log(replies.length + ' objects')
-				replies.forEach(function (reply, i) {
-					let objres = JSON.parse(reply)
-					//console.log(objres)
-					process.stdout.write(objres.uid)
-					process.stdout.write(' : ' + objres.name)
-					console.log(typeof objres)
-				})
-				console.log(replies.length + ' ' + args._[1] + ' objects')
-				rclient.quit()
-			})
+		if (args._[1] !== 'ls' && (!args._[2])) {
+			myvalue = await Rejson.myobj(args._[1])
+			console.log(await myvalue + ' ')
+			//return 
+			//return await Rejson.close()
 		}
+		await Rejson.close()
 	} catch (err) {
 		console.log(err.message)
 		throw new Error(err)

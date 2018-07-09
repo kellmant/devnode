@@ -24,6 +24,7 @@ const cpLive = require('../fun/session')
 const Cpapi = require('../class/cpapi')
 const Keystore = require('../class/keystore')
 const Cpobject = require('../class/object')
+const Rejson = require('../fun/rjcache')
 let mycmd = 'where-used'
 
 // example runtime for your class method
@@ -53,6 +54,8 @@ module.exports = async (args) => {
 		let mycpuse = await Myapi.apiPost()
 		let cpdiruse = mycpuse['used-directly']
 		await console.log('%j', cpdiruse)
+		await console.log(typeof cpdiruse)
+		await Rejson(cpdiruse)
 		return await cpdiruse
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)

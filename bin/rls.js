@@ -16,12 +16,7 @@ module.exports = async (args) => {
 		const myvalue = await Keystore.all(args.key)
 		//await console.dir(myvalue)
 		await console.log(typeof myvalue)
-		if (myvalue === null) {
-			await console.log(args.key + ' not a key in redis')
-		} else {
-			await console.log('Keys: ')
-			await console.dir(myvalue)
-		}
+		Keystore.close()
 		return await myvalue
 	} catch (err) {
 		console.log(err)
