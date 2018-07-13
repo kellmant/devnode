@@ -22,14 +22,21 @@ module.exports = async (args) => {
 			//return
 		}
 		if ((args._[1]) && (args.index)) {
+			let mycnt = 0
 			mylength = await Rejson.count(args._[1])
 			for (var i = 1; i < mylength; i++) {
-				let myout = await Rejson.mykey(args._[1], '_' + i + '.' + args.index)
-				console.dir(await i + ' ' + args.index + ' => ' +  myout)
-				//console.dir(await myout)
+				myvalue = await Rejson.mykey(args._[1], '_' + i + '.' + args.index)
+				var mycvar = JSON.stringify(await myvalue)
+				if ((mycvar.length) < 7) {
+					continue
+				} else {
+					mycnt++
+					console.dir(await myvalue)
 				}
-				console.log(await args._[0] + ' ' + args._[1])
-			args._[1] = 'ls'
+				
+				}
+				console.log(await mycnt + ' of ' + mylength + ' objects have ' + args.index + ' '  + args._[0] + ' ' + args._[1])
+				args._[1] = 'ls'
 		}
 		if ((args._[1]) && (args.schema)) {
 			let myout = await Rejson.myobj(args._[1], '_1')

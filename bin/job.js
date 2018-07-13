@@ -112,11 +112,11 @@ module.exports = async (args) => {
 			//	} else {
 			mycount++
 			Rejson.filter(args.filter, '_' + mycount, parsedObj[i][j]).then((myfil) => {
-					return myfil
+					console.log(myfil)
 					})
 				}
 			//console.log(j + ' Middle block count: ' + mycount)
-			console.dir(parsedObj[i])
+			//console.dir(parsedObj[i])
 			console.log(i + ' Outer block FINAL count: ')
 		}
 		Rejson.close()
@@ -128,7 +128,7 @@ module.exports = async (args) => {
 		let runcmd = {'_':['logout']}
 		let myclose = require('../bin/logout')(runcmd)
 		//require('../bin/logout')
-		return await myclose
+		//return await myclose
 	}
 }
 

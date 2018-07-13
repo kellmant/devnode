@@ -10,7 +10,7 @@
 	     logout   ... end current session login
 
 	     cache    ... capture all uid as json object to etcd keystore
-	     rcache   ... capture all uid as json object to Redis keystore
+	     rjcache   ... capture all uid as json object to Redis keystore
 	     redis    ... Redis keystore hashed key value listing
 	     job      ... cache objects in cpapi to redis
 	     try      ... example api call for check point objects
@@ -38,7 +38,7 @@
 
 		                          `,
 	
-	rcache:`
+	rjcache:`
 		ctrl rcache 
 
 		           ..... saves local cache of CP objects
@@ -54,10 +54,17 @@
 	redis:`
 		ctrl redis <hash field> [--flush]
 
-		 ctrl redis          ..... summary of hash fields
-		 ctrl redis ls       ..... list all root hash keys
-		 ctrl redis <key>    ..... display key values in hash
-		 ctrl redis --flush  ..... clear all hash keys in Redis db
+		 ctrl redis                              ..... summary of hash fields
+		 ctrl redis ls                           ..... list all root hash keys
+		 ctrl redis <key>                        ..... display key values in hash
+		 ctrl redis <key> --schema               ..... display object schemas
+		 ctrl redis <key> --index <value name>   ..... get object values across key stores as an array
+		 ctrl redis --flush                      ..... clear all hash keys in Redis db
+
+			example: ctrl redis mykeygroup --index uid
+		How cool is that? If you don't know what that means, keep tinkering. Being able to grab
+		and array of uid's is an opportunity. And it doesn't stop at uids.
+
 		                          `,
 
 	keystore:`
@@ -96,6 +103,7 @@
 		 [command]             ..... (optional) cpapi commands can be passed to the api
 
 		 ex. ctrl job --type host --filter "MyHost" --tags "DMZ Host" --tags "My App"
+		 use ctrl redis to see the results, stored as your filter name.
 
 		                          `,
 
