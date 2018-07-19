@@ -12,7 +12,7 @@
 // for runtime
 //
 const delay = async () => {
-	const incmd = {'_':['login', 'opb']}
+	const incmd = {'_':['login', 'dxc']}
 	const startup = require('../bin/login')(incmd)
 	await console.log(startup)
 	return await startup
@@ -26,6 +26,7 @@ const path = require('path');
 
 const doParse = require('../fun/testobj')
 const doClean = require('../fun/rjcache')
+const doWrite = require('../fun/writefile')
 const Rejson = require('../fun/rejson')
 
 const cpLive = require('../fun/session')
@@ -100,24 +101,23 @@ module.exports = async (args) => {
 		if (!args.type) {
 			args.type = 'object'
 		}
+
+		let myfile = args.type + '-' + args.filter
+		//await doWrite(myfile, parsedObj)
 	Rejson.rootkey(args).then((myio) => {
 		return myio
 	})
 		var mycount = 0
 		for (var i in parsedObj) {
 			for (var j in parsedObj[i]) {
-			//	let myObj = Object.keys(parsedObj[i][j]).reduce((p, c) => ({...p, [c]: parsedObj[i][j][c]}), {})
-			//	if (!myObj) {
-			//		continue
-			//	} else {
 			mycount++
 			Rejson.filter(args.filter, '_' + mycount, parsedObj[i][j]).then((myfil) => {
-					console.log(myfil)
+					//console.log(mycount)
+					continue
 					})
 				}
 			//console.log(j + ' Middle block count: ' + mycount)
 			//console.dir(parsedObj[i])
-			console.log(i + ' Outer block FINAL count: ')
 		}
 		Rejson.close()
 		return

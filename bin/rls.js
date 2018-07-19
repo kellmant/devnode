@@ -8,7 +8,7 @@ const Keystore = require('../fun/redis')
 
 module.exports = async (args) => {
 	try {
-		console.log('RUNTIME passed args : %j', args)
+		console.log('Listing REDIS hash keys : %j', args)
 		if (!args.key) {
 			args.key = '*'
 		}

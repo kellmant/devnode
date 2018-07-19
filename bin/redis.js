@@ -7,6 +7,7 @@ const classcall = `../class/${scriptname}`
 const redis = require('redis')
 //const jsonify = require('redis-jsonify')
 const Rejson = require('../fun/rejson')
+const doWrite = require('../fun/writefile')
 
 
 
@@ -39,16 +40,22 @@ module.exports = async (args) => {
 				args._[1] = 'ls'
 		}
 		if ((args._[1]) && (args.schema)) {
-			let myout = await Rejson.myobj(args._[1], '_1')
-			console.log(await myout)
+			if (args._[2]) {
+			myvalue = await Rejson.myobj(args._[1], args._[2])
+			} else {
+			myvalue = await Rejson.myobj(args._[1], '.')
+			}
+			console.log(await myvalue)
 			args._[1] = 'ls'
 		}
-		if ((args._[2]) && (args._[1])) {
+		if ((args._[2]) && (args._[1] !== 'ls')) {
 			myvalue = await Rejson.mykey(args._[1], args._[2])
 			console.log(await myvalue)
-			return await myvalue
+			args._[1] = 'ls'
+			//return await myvalue
 		}
 		if ((args._[1] === 'ls') || (!args._[1])) {
+			console.log(' ')
 			let myhelp = { '_' : ['rls'] }	
 			let myout = await require('../bin/rls')(myhelp)
 			console.log(await myout)
@@ -57,7 +64,8 @@ module.exports = async (args) => {
 			}
 		if (args._[1] !== 'ls' && (!args._[2])) {
 			myvalue = await Rejson.myobj(args._[1])
-			console.log(await myvalue + ' ')
+			console.log(await myvalue)
+			console.log(typeof myvalue)
 			//return 
 			//return await Rejson.close()
 		}

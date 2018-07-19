@@ -6,7 +6,19 @@ var myout = {}
 module.exports.myget = async (k) => {
 	try {
 		myout = await myjson.mget(k, '.') 
-		await myjson.client.quit()
+		//await myjson.client.quit()
+		return await myout
+	} catch (err) {
+		console.log(err)
+	}
+}
+
+module.exports.myvals = async (k, p) => {
+	try {
+		myout = await myjson.get(k, p) 
+		//await myjson.client.quit()
+		await console.log('getting vals from ' + k + ' and ' + p)
+		await console.log(myout)
 		return await myout
 	} catch (err) {
 		console.log(err)
@@ -64,7 +76,7 @@ module.exports.count = async (k) => {
 }
 module.exports.rootkey = async (a) => {
 	try {
-		myjson.set(a.filter, '.', { 'filter': a.filter }, 'NX')
+		myjson.set(a.filter, '.', { '_index': a }, 'NX')
 		//await console.log(myout)
 		//await myjson.client.quit()
 		//return await myout

@@ -52,13 +52,13 @@
 
 		                          `,
 	redis:`
-		ctrl redis <hash field> [--flush]
+		ctrl redis <hash field> [key index] [--flush]
 
 		 ctrl redis                              ..... summary of hash fields
 		 ctrl redis ls                           ..... list all root hash keys
-		 ctrl redis <key>                        ..... display key values in hash
-		 ctrl redis <key> --schema               ..... display object schemas
-		 ctrl redis <key> --index <value name>   ..... get object values across key stores as an array
+		 ctrl redis <hash>                       ..... display key values in hash
+		 ctrl redis <hash> [key] --schema        ..... display object schemas
+		 ctrl redis <hash> --index <key>         ..... get object values across key stores as an array
 		 ctrl redis --flush                      ..... clear all hash keys in Redis db
 
 			example: ctrl redis mykeygroup --index uid
