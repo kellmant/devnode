@@ -11,15 +11,16 @@
 // this will show you return values of your args 
 // for runtime
 //
+
 const delay = async () => {
-	const incmd = {'_':['login', 'opb']}
+	const incmd = {'_':['login']}
 	const startup = require('../bin/login')(incmd)
 	await console.log(startup)
 	return startup
 }
 const myoffset = 0
 const pglimit = 500
-const details = 'uid'
+const details = 'standard'
 const path = require('path');
 const scriptname = path.basename(__filename);
 const classcall = `../class/${scriptname}`
@@ -70,13 +71,15 @@ module.exports = async (args) => {
 		await Myapi.print()
 		let mycpres = await Myapi.apiPost()
 		let parsedObj = []
-		parsedObj.push(await doParse(mycpres.objects))
+		parsedObj.push(await doParse(mycpres))
+		//parsedObj += await doParse(mycpres)
 		if (mycpres.total > mycpres.to) {
 			let inoffset = Number(myoffset) + Number(pglimit)
 			while (mycpres.total > inoffset) {
 				await Myapi.setCnt(inoffset, pglimit)
 				mycpres = await Myapi.apiPost()
-				parsedObj.push(await doParse(mycpres.objects))
+				parsedObj.push(await doParse(mycpres))
+				//parsedObj += await doParse(mycpres)
 				inoffset = Number(inoffset) + Number(pglimit)
 			}
 		}
@@ -94,56 +97,21 @@ module.exports = async (args) => {
 			args.type = 'object'
 		}
 
-		const rclient = jsonify(redis.createClient('redis://redis:6379'))
+		//const rclient = jsonify(redis.createClient('redis://redis:6379'))
 		let mycnt = 0
 		var myOid = {}
 		var myHash = {}
 		var myreturn = {}
-		var newArray = Array.from(Object.values(parsedObj))
-		for (var i in newArray) {
-			for (var j in newArray[i]) {
-				myOid = newArray[i][j]
-				if (args.hash) {
-				myHash = args.hash
-				} else {
-				myHash = args.filter
-				}
-				//console.log(myHash + ' : ' + myOid)
-				myreturn = await rclient.hget('uid', myOid, function (err, reply) {
-					console.log(typeof reply)
-					console.log(reply)
-					return reply
-			})
-				await console.dir(myreturn)
-				await rclient.quit()
-				//const myObj = new Keystore()
-				//await myObj.getKey(myUid)
-				//let myCached = JSON.parse(await myObj.resVal())
-				
-				//console.log(' obj/' + args.filter + '/' + newArray[i][j] + ' = ' + args.type)
-				//await console.log(myCached.type)
-				//const myNewobj = new Cpobject(myCached)
-				//await myNewobj.host(myCached)
-				//await myNewobj.network(myCached)
-				//await myNewobj.tag(args.filter)
-				//if (args.tags) {
-				//await myNewobj.tag(args.tags)
-				//}
-				//let objDump = await myNewobj.dump()
-				//await console.dir(objDump)
-				//let cpTagged = {
-				//	'key' : 'tag/' + args.filter + '/set-' + myCached.type + '/' + myCached.uid,
-				//	'value' : JSON.stringify(objDump),
-				//	'tagkey' : 'obj/add-tag/' + args.filter,
-				//	'tagvalue' : args.filter
-				//}
-
-				//await myObj.setKey(cpTagged.key, cpTagged.value)
-				mycnt++
-				//await myObj.setKey(cpTagged.tagkey, cpTagged.tagvalue)
-			}
-		}
-		console.log(mycnt)
+		//var newArray = Array.from(Object.values(parsedObj))
+		//console.log(newArray)
+		Object.entries(parsedObj).forEach(([key, value]) => { 
+			console.dir(value)
+			console.log(value.length)
+		})
+		//console.dir(parsedObj)
+		console.log(parsedObj.length)
+		console.log(typeof parsedObj)
+		//console.log(newArray[0])
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)
 		console.log(err)

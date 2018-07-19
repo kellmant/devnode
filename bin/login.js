@@ -27,9 +27,12 @@ const Cptoken = require('../class/token')
 
 module.exports = async (args) => {
 	try {
-		if (!args._[1]) {
+		if ((!args._[1]) && (!process.env.SMC)) {
 			require('../bin/help')(args)
 			return
+		}
+		if ((!args._[1]) && (process.env.SMC)) {
+			args._[1] = process.env.SMC
 		}
 		const myAuth = await doAuth(args)
 		let myToken = await new Cptoken(myAuth)

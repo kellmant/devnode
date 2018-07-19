@@ -12,7 +12,7 @@
 // for runtime
 //
 const delay = async () => {
-	const incmd = {'_':['login', 'dxc']}
+	const incmd = {'_':['login']}
 	const startup = require('../bin/login')(incmd)
 	await console.log(startup)
 	return await startup
@@ -111,9 +111,8 @@ module.exports = async (args) => {
 		for (var i in parsedObj) {
 			for (var j in parsedObj[i]) {
 			mycount++
-			Rejson.filter(args.filter, '_' + mycount, parsedObj[i][j]).then((myfil) => {
-					//console.log(mycount)
-					continue
+			Rejson.filter(args.filter, '_' + mycount, parsedObj[i][j]).then((res) => {
+					console.log(res)
 					})
 				}
 			//console.log(j + ' Middle block count: ' + mycount)
