@@ -1,5 +1,6 @@
 
-const Redis = require('redis-utils-json');
+//const Redis = require('redis-utils-json');
+const Rejson = require('../fun/rejson')
 
 // this function takes in the raw check point object, and indexes it as a full object
 // without using a class. Rather then load a full method, you just want the details
@@ -16,10 +17,8 @@ const Redis = require('redis-utils-json');
 
 module.exports = async (x) => {
 	try {
-		const client = new Redis('redis://redis:6379')
 		return new Promise(function(resolve, reject) {
-			let mydata = JSON.stringify(x)
-			client.setKey('type:' + x.type, x, function (err, res) {
+			Rejson.mykey(x, function (err, res) {
 			if (err) {
 				reject(err)
 			} else {

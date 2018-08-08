@@ -25,9 +25,10 @@ module.exports.myvals = async (k, p) => {
 	}
 }
 
-module.exports.myset = async (k, c) => {
+module.exports.myset = async (f, p, k) => {
 	try {
-		await myjson.set(k.type, c, k)
+		myjson.set(f, p, k, 'NX')
+		//await myjson.set(k.type, c, k)
 		//return await myout
 		//await myjson.client.quit()
 	} catch (err) {
@@ -74,9 +75,9 @@ module.exports.count = async (k) => {
 		console.log(k)
 	}
 }
-module.exports.rootkey = async (a) => {
+module.exports.rootkey = async (r, k) => {
 	try {
-		myjson.set(a.filter, '.', { '_index': a }, 'NX')
+		myjson.set(r, '.', k, 'NX')
 		//await console.log(myout)
 		//await myjson.client.quit()
 		//return await myout
@@ -86,24 +87,15 @@ module.exports.rootkey = async (a) => {
 	}
 }
 
-module.exports.cproot = async (k,v) => {
+module.exports.append = async (f,c,k) => {
 	try {
-		myjson.set(k, '.', { '_index': v }, 'NX')
-	} catch (err) {
-		console.log(err)
-		console.log(k)
-	}
-}
-
-module.exports.filter = async (f, c, k) => {
-	try {
-		myjson.set(f, c, k)
+		myjson.set(f, '_' + c, k)
 		//await console.log(myout)
 		//await myjson.client.quit()
 		//return await myout
 	} catch (err) {
 		console.log(err)
-		console.log(k.name)
+		console.log(k)
 	}
 }
 
@@ -114,7 +106,6 @@ module.exports.close = async () => {
 		//return await myout
 	} catch (err) {
 		console.log(err)
-		console.log(k.name)
 	}
 }
 
