@@ -21,7 +21,7 @@ const delay = async () => {
 	return startup
 }
 const myoffset = 0
-const pglimit = 500
+const pglimit = 10
 const details = 'full'
 const classcall = `../class/${scriptname}`
 //const myClass = require(classcall)
@@ -38,6 +38,7 @@ const cpLive = require('../fun/session')
 const Cpapi = require('../class/cpapi')
 const Keystore = require('../class/keystore')
 const Cpobject = require('../class/object')
+const cpTask = require('../fun/taskid')
 let mycmd = 'show-task'
 
 // example runtime for your class method
@@ -46,10 +47,12 @@ let mycmd = 'show-task'
 module.exports = async (args) => {
 	try {
 		let newcpdata = {}
+		let parsedArr = []
+		args.id = await cpTask()
 		await delay()
 		if (args._[1]) {
 			console.log(args._[1])
-			mycmd = args._[1]
+			args.id = args._[1]
 		}
 		if (args.last) {
 			console.log('showing last published')
@@ -78,12 +81,11 @@ module.exports = async (args) => {
 		await Myapi.print()
 		let mycpres = await Myapi.apiPost()
 		await doWrite('dump', mycpres)
-		let parsedArr = []
 		let parsedObj = {}
 		var getRes = {}
-		parsedArr.push(await doParse(mycpres))
+		//parsedArr.push(await doParse(mycpres))
 		//parsedObj = await doParse(mycpres)
-		//parsedArr.push(parsedObj)
+		parsedArr.push(await mycpres)
 		if (mycpres.total > mycpres.to) {
 			let inoffset = Number(myoffset) + Number(pglimit)
 			while (mycpres.total > inoffset) {
@@ -91,7 +93,7 @@ module.exports = async (args) => {
 				mycpres = await Myapi.apiPost()
 				//getRes = mycpres
 				//parsedObj = await doParse(mycpres)
-				parsedArr.push(await doParse(mycpres))
+				parsedArr.push(await mycpres)
 				inoffset = Number(inoffset) + Number(pglimit)
 			}
 		}
@@ -129,15 +131,16 @@ module.exports = async (args) => {
 		//console.dir(parsedArr)
 		console.log(parsedArr.length)
 		console.log(typeof parsedArr)
-		await doWrite('try', parsedArr[0])
-		//console.log(newArray[0])
+		console.dir(await parsedArr[0])
+		await doWrite('changes', parsedArr[0])
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)
-		console.log(err)
+		//console.log(err)
+		throw err
 	} finally {
 		let runcmd = {'_':['logout']}
 		require('../bin/logout')(runcmd)
-		return
+		//return
 	}
 }
 

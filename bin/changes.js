@@ -21,8 +21,8 @@ const delay = async () => {
 	return startup
 }
 const myoffset = 0
-const pglimit = 500
-const details = 'full'
+const pglimit = 10
+const details = 'standard'
 const classcall = `../class/${scriptname}`
 //const myClass = require(classcall)
 
@@ -55,9 +55,8 @@ module.exports = async (args) => {
 			console.log('showing last published')
 			mycmd = 'show-last-published-session'
 		}
-		if (args.uid) {
-			console.log('showing last published')
-			mycmd = 'show-session'
+		if (args.from) {
+			console.log('showing changes from ' + args.from)
 		}
 		const cpSession = await cpLive()
 		await console.dir(cpSession)
@@ -67,7 +66,7 @@ module.exports = async (args) => {
 		}
 		let Myapi = await new Cpapi(cpSession)
 		await Myapi.print()
-		if ((mycmd !== 'show-session') || (!args.uid)) {
+		if (!args.last) {
 		await Myapi.setCnt(myoffset, pglimit)
 		await Myapi.setDetail(details)
 		}
@@ -81,9 +80,8 @@ module.exports = async (args) => {
 		let parsedArr = []
 		let parsedObj = {}
 		var getRes = {}
-		parsedArr.push(await doParse(mycpres))
+		parsedArr.push(await mycpres)
 		//parsedObj = await doParse(mycpres)
-		//parsedArr.push(parsedObj)
 		if (mycpres.total > mycpres.to) {
 			let inoffset = Number(myoffset) + Number(pglimit)
 			while (mycpres.total > inoffset) {
@@ -91,32 +89,13 @@ module.exports = async (args) => {
 				mycpres = await Myapi.apiPost()
 				//getRes = mycpres
 				//parsedObj = await doParse(mycpres)
-				parsedArr.push(await doParse(mycpres))
+				parsedArr.push(await mycpres)
 				inoffset = Number(inoffset) + Number(pglimit)
 			}
 		}
 		//parsedObj[args.filter] = await doParse(getRes)
 		//parsedArr.push(parsedObj)
-		if (mycmd === 'show-unused-objects') {
-			args.filter = 'unused'
-			args.type = 'object'
-			if (!args.tags) {
-				args.tags = 'unused'
-			}
-		}
-		if (!args.filter) {
-			args.filter = 'all'
-		}
-		if (!args.type) {
-			args.type = 'object'
-		}
-
 		//const rclient = jsonify(redis.createClient('redis://redis:6379'))
-		let mycnt = 0
-		var myOid = {}
-		var myHash = {}
-		var myreturn = {}
-		//var newArray = Array.from(Object.values(parsedObj))
 		//console.log(newArray)
 		//Object.entries(parsedArr).forEach(([key, value]) => { 
 			//console.log(value)
@@ -127,13 +106,15 @@ module.exports = async (args) => {
 			//console.log('XXXXX ')
 		//})
 		//console.dir(parsedArr)
-		console.log(parsedArr.length)
-		console.log(typeof parsedArr)
-		await doWrite('try', parsedArr[0])
+		await doWrite('task', parsedArr)
 		//console.log(newArray[0])
+		console.log(' ')
+		console.log(parsedArr[0]['task-id'])
+		console.log(' ')
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)
-		console.log(err)
+		//console.log(err)
+		throw err
 	} finally {
 		let runcmd = {'_':['logout']}
 		require('../bin/logout')(runcmd)

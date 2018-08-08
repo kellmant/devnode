@@ -82,7 +82,8 @@ module.exports = async (args) => {
 		let parsedArr = []
 		let parsedObj = {}
 		var getRes = {}
-		parsedArr.push(await doParse(mycpres))
+		//parsedArr.push(await doParse(mycpres))
+		parsedArr.push(await mycpres)
 		//parsedObj = await doParse(mycpres)
 		//parsedArr.push(parsedObj)
 		if (mycpres.total > mycpres.to) {
@@ -92,7 +93,7 @@ module.exports = async (args) => {
 				mycpres = await Myapi.apiPost()
 				//getRes = mycpres
 				//parsedObj = await doParse(mycpres)
-				parsedArr.push(await doParse(mycpres))
+				parsedArr.push(await mycpres)
 				inoffset = Number(inoffset) + Number(pglimit)
 			}
 		}
@@ -119,18 +120,17 @@ module.exports = async (args) => {
 		var myreturn = {}
 		//var newArray = Array.from(Object.values(parsedObj))
 		//console.log(newArray)
-		//Object.entries(parsedArr).forEach(([key, value]) => { 
-			//console.log(value)
+		//Object.entries(parsedArr.objects).forEach(([key, value]) => { 
 			//console.log('XXXXX ')
 			//Rejson.filter('net', '_' + args.filter, value)
-			//console.log(value)
-			//console.log(key)
-			//console.log('XXXXX ')
+		//	console.log(value)
+		//	console.log(key)
+		//	console.log('XXXXX ')
 		//})
 		//console.dir(parsedArr)
 		console.log(parsedArr.length)
 		console.log(typeof parsedArr)
-		await doWrite('try', parsedArr[0])
+		await doWrite('try', parsedArr)
 		//console.log(newArray[0])
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)
