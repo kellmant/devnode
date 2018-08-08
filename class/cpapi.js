@@ -61,8 +61,20 @@ module.exports = class Cpapi {
 		if (x.uid) {
 			this.data.uid = x.uid
 		}
-		if (x.uid) {
-			this.data.uid = x.uid
+		if (x.id) {
+			this.data['task-id'] = x.id
+		}
+		if (x.toid) {
+			this.data['to-session'] = x.toid
+		}
+		if (x.frid) {
+			this.data['from-session'] = x.frid
+		}
+		if (x.to) {
+			this.data['to-date'] = x.to
+		}
+		if (x.from) {
+			this.data['from-date'] = x.from
 		}
 		return this
 	}
