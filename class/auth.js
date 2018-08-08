@@ -10,6 +10,7 @@
 //
 const path = require('path');
 const scriptname = path.basename(__filename);
+const pathname = __filename
 const funcall = `../fun/${scriptname}`
 const myFunc = require(funcall)
 const myApi = require('../fun/api')
@@ -35,7 +36,9 @@ module.exports = class Auth {
 		let mydata = {
 			'user': this.user,
 			'password': this.passwd,
-			'session-description': myEnv + desc
+			'session-description': myEnv + desc,
+			'session-comments': 'PID: ' + process.pid + ' ' + pathname + ' ' + myBud,
+			'session-name': myBud + process.pid
 		}
 		let myurl = `https://${this.host}/web_api/`
 		let mycmd = 'login'
