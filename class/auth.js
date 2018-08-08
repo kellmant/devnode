@@ -13,6 +13,9 @@ const scriptname = path.basename(__filename);
 const funcall = `../fun/${scriptname}`
 const myFunc = require(funcall)
 const myApi = require('../fun/api')
+const myBud = process.env.BUDDY
+const myUser = process.env.HOME
+const myEnv = new Date().toString() + ' ' + myBud + ' running ' + myUser + ' '
 
 module.exports = class Auth {
 
@@ -26,12 +29,13 @@ module.exports = class Auth {
 		this.host = await myFunc(this.dir + 'hostname')
 		return this
 	}
-	async getToken () {
+	async getToken (desc) {
 		const mypost = {}
 		let mymethod = 'post'
 		let mydata = {
 			'user': this.user,
-			'password': this.passwd
+			'password': this.passwd,
+			'session-description': myEnv + desc
 		}
 		let myurl = `https://${this.host}/web_api/`
 		let mycmd = 'login'
