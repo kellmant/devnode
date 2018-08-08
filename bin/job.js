@@ -11,9 +11,12 @@
 // this will show you return values of your args 
 // for runtime
 //
+const path = require('path');
+const scriptname = path.basename(__filename);
+
 const delay = async () => {
 	const incmd = {'_':['login']}
-	const startup = require('../bin/login')(incmd)
+	const startup = require('../bin/login')(incmd, scriptname)
 	await console.log(startup)
 	return await startup
 }
@@ -22,9 +25,8 @@ const noffcmds = [ "show-last-published-session", "show-changes", "show-validati
 const myoffset = 0
 const pglimit = 500
 const details = 'full'
-const path = require('path');
 
-const doParse = require('../fun/testobj')
+const doParse = require('../fun/scanobj')
 const doClean = require('../fun/rjcache')
 const doWrite = require('../fun/writefile')
 const Rejson = require('../fun/rejson')
@@ -73,8 +75,8 @@ module.exports = async (args) => {
 		await Myapi.print()
 		let mycpres = await Myapi.apiPost()
 		console.dir(mycpres)
-		console.log(typeof mycpres)
-		console.log(Object.entries(mycpres).length)
+		//console.log(typeof mycpres)
+		//console.log(Object.entries(mycpres).length)
 		let parsedObj = []
 		parsedObj.push(await doParse(mycpres))
 		if (mycpres.total > mycpres.to) {
@@ -112,7 +114,7 @@ module.exports = async (args) => {
 			for (var j in parsedObj[i]) {
 			mycount++
 			Rejson.filter(args.filter, '_' + mycount, parsedObj[i][j]).then((res) => {
-					console.log(res)
+					console.log(j)
 					})
 				}
 			//console.log(j + ' Middle block count: ' + mycount)

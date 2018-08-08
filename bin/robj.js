@@ -11,16 +11,17 @@
 // this will show you return values of your args 
 // for runtime
 //
+const path = require('path');
+const scriptname = path.basename(__filename);
 const delay = async () => {
 	const incmd = {'_':['login', 'opb']}
-	const startup = require('../bin/login')(incmd)
+	const startup = require('../bin/login')(incmd, scriptname)
 	await console.log(startup)
 	return await startup
 }
 const myoffset = 0
 const pglimit = 500
 const details = 'full'
-const path = require('path');
 
 const doParse = require('../fun/testobj')
 const doClean = require('../fun/rjcache')

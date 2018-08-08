@@ -8,7 +8,7 @@
 // for runtime
 //
 const delay = async () => {
-	const incmd = {'_':['login', 'opb']}
+	const incmd = {'_':['login']}
 	const startup = await require('../bin/login')(incmd)
 	return await startup
 }
@@ -55,7 +55,7 @@ module.exports = async (args) => {
 		let cpdiruse = mycpuse['used-directly']
 		await console.log('%j', cpdiruse)
 		await console.log(typeof cpdiruse)
-		await Rejson(cpdiruse)
+		//await Rejson(cpdiruse)
 		return await cpdiruse
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)

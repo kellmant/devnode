@@ -25,7 +25,7 @@ const Cptoken = require('../class/token')
 // example runtime for your class method
 //
 
-module.exports = async (args) => {
+module.exports = async (args, desc) => {
 	try {
 		if ((!args._[1]) && (!process.env.SMC)) {
 			require('../bin/help')(args)
@@ -34,7 +34,7 @@ module.exports = async (args) => {
 		if ((!args._[1]) && (process.env.SMC)) {
 			args._[1] = process.env.SMC
 		}
-		const myAuth = await doAuth(args)
+		const myAuth = await doAuth(args, desc)
 		let myToken = await new Cptoken(myAuth)
 		await doWrite('token', myToken)
 		const myKey = {}

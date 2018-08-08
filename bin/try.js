@@ -12,21 +12,24 @@
 // for runtime
 //
 
+const path = require('path');
+const scriptname = path.basename(__filename);
 const delay = async () => {
 	const incmd = {'_':['login']}
-	const startup = require('../bin/login')(incmd)
+	const startup = require('../bin/login')(incmd, scriptname)
 	await console.log(startup)
 	return startup
 }
 const myoffset = 0
 const pglimit = 500
 const details = 'standard'
-const path = require('path');
-const scriptname = path.basename(__filename);
 const classcall = `../class/${scriptname}`
 //const myClass = require(classcall)
 
-const doParse = require('../fun/testobj')
+const doParse = require('../fun/mapobj')
+const doWrite = require('../fun/writefile')
+const usedIn = require('../fun/whereused')
+const Rejson = require('../fun/rejson')
 const getUid = require('../fun/reduid')
 const redis = require('redis')
 const jsonify = require('redis-jsonify')
@@ -60,7 +63,7 @@ module.exports = async (args) => {
 		}
 		let Myapi = await new Cpapi(cpSession)
 		await Myapi.print()
-		if (mycmd !== 'show-commands') {
+		if (mycmd !== 'show-last-published-session') {
 		await Myapi.setCnt(myoffset, pglimit)
 		await Myapi.setDetail(details)
 		}
@@ -70,19 +73,26 @@ module.exports = async (args) => {
 		await Myapi.setCmd(mycmd)
 		await Myapi.print()
 		let mycpres = await Myapi.apiPost()
-		let parsedObj = []
-		parsedObj.push(await doParse(mycpres))
-		//parsedObj += await doParse(mycpres)
+		await doWrite('dump', mycpres)
+		let parsedArr = []
+		let parsedObj = {}
+		var getRes = {}
+		parsedArr.push(await doParse(mycpres))
+		//parsedObj = await doParse(mycpres)
+		//parsedArr.push(parsedObj)
 		if (mycpres.total > mycpres.to) {
 			let inoffset = Number(myoffset) + Number(pglimit)
 			while (mycpres.total > inoffset) {
 				await Myapi.setCnt(inoffset, pglimit)
 				mycpres = await Myapi.apiPost()
-				parsedObj.push(await doParse(mycpres))
-				//parsedObj += await doParse(mycpres)
+				//getRes = mycpres
+				//parsedObj = await doParse(mycpres)
+				parsedArr.push(await doParse(mycpres))
 				inoffset = Number(inoffset) + Number(pglimit)
 			}
 		}
+		//parsedObj[args.filter] = await doParse(getRes)
+		//parsedArr.push(parsedObj)
 		if (mycmd === 'show-unused-objects') {
 			args.filter = 'unused'
 			args.type = 'object'
@@ -104,13 +114,18 @@ module.exports = async (args) => {
 		var myreturn = {}
 		//var newArray = Array.from(Object.values(parsedObj))
 		//console.log(newArray)
-		Object.entries(parsedObj).forEach(([key, value]) => { 
-			console.dir(value)
-			console.log(value.length)
-		})
-		//console.dir(parsedObj)
-		console.log(parsedObj.length)
-		console.log(typeof parsedObj)
+		//Object.entries(parsedArr).forEach(([key, value]) => { 
+			//console.log(value)
+			//console.log('XXXXX ')
+			//Rejson.filter('net', '_' + args.filter, value)
+			//console.log(value)
+			//console.log(key)
+			//console.log('XXXXX ')
+		//})
+		//console.dir(parsedArr)
+		console.log(parsedArr.length)
+		console.log(typeof parsedArr)
+		await doWrite('try', parsedArr[0])
 		//console.log(newArray[0])
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)

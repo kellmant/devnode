@@ -21,7 +21,7 @@ const doWrite = require('../fun/writefile')
 // example runtime for your class method
 //
 
-module.exports = async (args) => {
+module.exports = async (args, desc) => {
 	try {
 		if (!args._[1]) {
 			require('../bin/help')(args)
@@ -32,7 +32,7 @@ module.exports = async (args) => {
 		mySession.print()
 		await mySession.setAuth()
 		//await mySession.print()
-		let myapi = await mySession.getToken()
+		let myapi = await mySession.getToken(desc)
 		await doWrite('session', myapi.data)
 		return myapi.data
 		//await console.dir(myapi.data)
