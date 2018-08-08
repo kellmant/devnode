@@ -6,11 +6,15 @@
 
 	    [command] 	   Description
 	    =================================================
-	     login    ... login to <CPapiHost>
+	     login    ... login to <CPapiHost> (defaults to env SMC value)
 	     logout   ... end current session login
 
+	     session  ... show session details of changes
+	     changes  ... show published changes from sessions
+	     task     ... check change task status or results
+
 	     cache    ... capture all uid as json object to etcd keystore
-	     rjcache   ... capture all uid as json object to Redis keystore
+	     rjcache  ... capture all uid as json object to Redis keystore
 	     redis    ... Redis keystore hashed key value listing
 	     job      ... cache objects in cpapi to redis
 	     try      ... example api call for check point objects
@@ -64,6 +68,34 @@
 			example: ctrl redis mykeygroup --index uid
 		How cool is that? If you don't know what that means, keep tinkering. Being able to grab
 		and array of uid's is an opportunity. And it doesn't stop at uids.
+
+		                          `,
+
+	session:`
+		ctrl session --[option] <setting>
+
+		 --uid  ..... <uid of session to show>
+		 --last ..... no options, show last published session
+			no options shows all sessions
+
+		                          `,
+
+	changes:`
+		ctrl changes --[option] <setting>
+
+		 --toid  ..... <to the id of the session to show>
+		 --frid  ..... <from the id of the session to show>
+		 --to    ..... <date to show changes to in ISO 8601 format>
+		 --from  ..... <date to show changes from in ISO 8601 format>
+			example: ctrl changes --to 2018-07-21
+			returns a task id that must be tracked for return value.
+
+		                          `,
+
+	task:`
+		ctrl task --[option] <setting>
+
+		 --id ..... <uid of task to show progress or value of>
 
 		                          `,
 
