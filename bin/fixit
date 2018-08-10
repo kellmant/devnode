@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ -z ${1} ] ; then
+	echo "no file"
+	ls /web/diagrams/puml/
+	exit
+fi
+
+echo "generating uml from json . . . "
+json-to-plantuml -f $HOME/playground/try.json > /web/diagrams/puml/${1}.puml
+
+
+echo "cleaning html from plant uml output (you never know) . . . "
+sed -i 's/&quot;/\"/g' /web/diagrams/puml/${1}.puml
+
+echo "making diagrams from source . . . "
+cd /web
+diagrams make
+echo "done"
+exit
+
+
