@@ -30,15 +30,19 @@ module.exports = class Auth {
 		this.host = await myFunc(this.dir + 'hostname')
 		return this
 	}
-	async getToken (desc) {
+	async getToken (mysys) {
 		const mypost = {}
 		let mymethod = 'post'
 		let mydata = {
 			'user': this.user,
 			'password': this.passwd,
-			'session-description': myEnv + desc,
+			'session-description': myEnv + mysys.desc,
 			'session-comments': 'PID: ' + process.pid + ' ' + pathname + ' ' + myBud,
 			'session-name': myBud + process.pid
+		}
+		if (mysys.domain) {
+			console.log('Logging into Domain: ' + mysys.domain)
+			mydata.domain = mysys.domain
 		}
 		let myurl = `https://${this.host}/web_api/`
 		let mycmd = 'login'

@@ -14,16 +14,19 @@
 
 const path = require('path');
 const scriptname = path.basename(__filename);
-const delay = async () => {
+const setsys = []
+
+const delay = async (mysys) => {
 	const incmd = {'_':['login']}
-	const startup = require('../bin/login')(incmd, scriptname)
+	const startup = require('../bin/login')(incmd, mysys)
 	await console.log(startup)
 	return startup
 }
+
 const myoffset = 0
 const pglimit = 10
 const details = 'full'
-const classcall = `../class/${scriptname}`
+//const classcall = `../class/${scriptname}`
 //const myClass = require(classcall)
 
 const doParse = require('../fun/anyobj')
@@ -46,10 +49,15 @@ let mycmd = 'show-task'
 
 module.exports = async (args) => {
 	try {
+		setsys.desc = scriptname
+		if (args.domain) {
+			setsys.domain = args.domain
+		}
+		console.log('setting sys var to: ' +  setsys)
+		await delay(setsys)
 		let newcpdata = {}
 		let parsedArr = []
 		args.id = await cpTask()
-		await delay()
 		if (args._[1]) {
 			console.log(args._[1])
 			args.id = args._[1]
@@ -132,7 +140,7 @@ module.exports = async (args) => {
 		console.log(parsedArr.length)
 		console.log(typeof parsedArr)
 		console.dir(await parsedArr[0])
-		await doWrite('changes', parsedArr[0])
+		await doWrite('changes', parsedArr)
 	} catch (err) {
 		console.log('ERROR IN SESSION event : ' + err.message)
 		//console.log(err)

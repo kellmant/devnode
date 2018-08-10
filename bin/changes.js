@@ -14,15 +14,17 @@
 
 const path = require('path');
 const scriptname = path.basename(__filename);
-const delay = async () => {
+const setsys = []
+
+const delay = async (mysys) => {
 	const incmd = {'_':['login']}
-	const startup = require('../bin/login')(incmd, scriptname)
+	const startup = require('../bin/login')(incmd, mysys)
 	await console.log(startup)
 	return startup
 }
 const myoffset = 0
-const pglimit = 10
-const details = 'standard'
+const pglimit = 3
+const details = 'full'
 const classcall = `../class/${scriptname}`
 //const myClass = require(classcall)
 
@@ -45,8 +47,12 @@ let mycmd = 'show-changes'
 
 module.exports = async (args) => {
 	try {
+		setsys.desc = scriptname
+		if (args.domain) {
+			setsys.domain = args.domain
+		}
+		await delay(setsys)
 		let newcpdata = {}
-		await delay()
 		if (args._[1]) {
 			console.log(args._[1])
 			mycmd = args._[1]

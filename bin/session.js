@@ -15,9 +15,11 @@
 const path = require('path');
 const scriptname = path.basename(__filename);
 
-const delay = async () => {
+const setsys = []
+
+const delay = async (mysys) => {
 	const incmd = {'_':['login']}
-	const startup = require('../bin/login')(incmd, scriptname)
+	const startup = require('../bin/login')(incmd, mysys)
 	await console.log(startup)
 	return startup
 }
@@ -40,14 +42,19 @@ const Cpapi = require('../class/cpapi')
 const Keystore = require('../class/keystore')
 const Cpobject = require('../class/object')
 let mycmd = 'show-sessions'
+//let mydom = 'System Data'
 
 // example runtime for your class method
 //
 
 module.exports = async (args) => {
 	try {
+		setsys.desc = scriptname
+		if (args.domain) {
+			setsys.domain = args.domain
+		}
 		let newcpdata = {}
-		await delay()
+		await delay(setsys)
 		if (args._[1]) {
 			console.log(args._[1])
 			mycmd = args._[1]
@@ -138,7 +145,6 @@ module.exports = async (args) => {
 	} finally {
 		let runcmd = {'_':['logout']}
 		require('../bin/logout')(runcmd)
-		return
 	}
 }
 

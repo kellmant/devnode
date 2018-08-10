@@ -21,8 +21,10 @@ const doWrite = require('../fun/writefile')
 // example runtime for your class method
 //
 
-module.exports = async (args, desc) => {
+module.exports = async (args, mysys) => {
 	try {
+		console.log(typeof mysys)
+		console.log(mysys)
 		if (!args._[1]) {
 			require('../bin/help')(args)
 			return
@@ -32,7 +34,7 @@ module.exports = async (args, desc) => {
 		mySession.print()
 		await mySession.setAuth()
 		//await mySession.print()
-		let myapi = await mySession.getToken(desc)
+		let myapi = await mySession.getToken(mysys)
 		await doWrite('session', myapi.data)
 		return myapi.data
 		//await console.dir(myapi.data)
@@ -44,7 +46,7 @@ module.exports = async (args, desc) => {
 		//let myclose = await  myThing.closeToken(myToken)
 		//await console.dir(myclose.data)
 	} catch (err) {
-		console.log('ERROR IN SESSION LOGIN for ' + args)
+		console.log('ERROR IN SESSION LOGIN for ' + mysys)
 		console.log(err)
 		return process.exit(1)
 	}
