@@ -1,6 +1,6 @@
 {
   "name": "dev",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "bin": {
     "ctrl": "bin/ctrl"
   },
@@ -25,15 +25,25 @@
   "homepage": "https://github.com/kellmant/node#readme",
   "dependencies": {
     "axios": "^0.18.0",
+    "comparison-object-diff": "^1.0.0",
+    "deep-object-diff": "^1.1.0",
+    "deep-sort-object": "^1.0.2",
+    "diff-arrays-of-objects": "^1.1.1",
     "etcd-result-objectify": "^1.0.0",
     "geoip-plus": "0.0.5",
+    "group-array-by": "^1.0.0",
+    "hyperdiff": "^2.0.5",
     "iorejson": "^0.1.1",
+    "json-groupby": "^1.1.0",
+    "just-diff": "^2.2.0",
     "minimist": "^1.2.0",
     "netmask": "^1.0.6",
-    "node-etcd": "^5.1.0",
+    "node-etcd": "^6.0.2",
     "redis": "^2.8.0",
     "redis-jsonify": "^1.2.0",
     "redis-rejson": "^1.0.0",
-    "redis-utils-json": "^1.0.0"
+    "redis-utils-json": "^1.0.0",
+    "removeduplicates": "^1.1.0",
+    "sort-any": "^1.1.12"
   }
 }
