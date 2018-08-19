@@ -23,7 +23,7 @@ const delay = async (mysys) => {
 	return startup
 }
 const myoffset = 0
-const pglimit = 3
+const pglimit = 10
 const details = 'full'
 const classcall = `../class/${scriptname}`
 //const myClass = require(classcall)
