@@ -76,6 +76,15 @@ module.exports = class Cpapi {
 		if (x.from) {
 			this.data['from-date'] = x.from
 		}
+		if (x.hits) {
+			this.data['show-hits'] = x.hits
+		}
+		if (x.dict) {
+			this.data['use-object-dictionary'] = x.dict
+		}
+		if (x.order) {
+			this.data.order = x.order
+		}
 		return this
 	}
 
