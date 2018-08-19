@@ -16,6 +16,7 @@ sed -i 's/&quot;/\"/g' /web/diagrams/puml/${1}.puml
 echo "making diagrams from source . . . "
 cd /web
 diagrams make
+diagrams generate
 echo "done"
 exit
 
