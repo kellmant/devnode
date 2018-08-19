@@ -75,7 +75,7 @@ module.exports = async (args) => {
 		}
 		let Myapi = await new Cpapi(cpSession)
 		await Myapi.print()
-		if ((mycmd !== 'show-session') || (!args.uid)) {
+		if ((mycmd !== 'show-package') || (!args.uid)) {
 		await Myapi.setCnt(myoffset, pglimit)
 		await Myapi.setDetail(details)
 		}
